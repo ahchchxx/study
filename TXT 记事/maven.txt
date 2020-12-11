@@ -1,0 +1,76 @@
+
+dependency 引入依赖的本地 jar 包
+	<dependency>
+		<groupId>a</groupId>
+		<artifactId>CL3Export</artifactId>
+		<version>1.0</version>
+		<scope>system</scope>
+		<systemPath>${project.basedir}/libs/CL3Export.jar</systemPath>
+		<!-- <systemPath>${pom.basedir}/libs/dhbcore.jar</systemPath> 相对路径的方式引入 -->
+	</dependency>
+	
+	<build>
+		<finalName>ImfApiDataExchange</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration><!-- 通过maven 打包时，引入本地的 jar 包 -->
+			        <includeSystemScope>true</includeSystemScope>
+			    </configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+【命令】
+使用 maven 打包的命令
+	mvn clean package -Dmaven.test.skip=true
+
+maven 常用命令
+	clean
+	compile
+	test
+	package
+	install
+
+【依赖传递】
+maven 里 dependency 节点的 optional 属性
+	<!--
+		可选依赖，如果你在项目 B 中，把 C 依赖声明为可选。
+		你就需要在依赖于B的项目（例如项目A）中，显式的引用对 C 的依赖。
+		从而阻断了依赖的传递性。
+	-->
+	<optional>true</optional>
+
+
+【打包发布】
+	1、配置 pom.xml
+		<build>
+			<finalName>LuggageDataExchange</finalName><!--指定文件名称 -->
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>${jdk.version}</source>
+						<target>${jdk.version}</target>
+						<encoding>${project.build.sourceEncoding}</encoding>
+					</configuration>
+				</plugin>
+				<!--该插件的主要功能是进行项目的打包发布处理 -->
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<configuration> <!--设置程序执行的主类 -->
+						<mainClass>com.cares.smis.LuggageDataExchangeApplication</mainClass>
+					</configuration>
+					<!--<version>1.5.9.RELEASE</version>-->
+				</plugin>
+			</plugins>
+		</build>
+	2、项目上右键单击 》 Run as 》Maven Build
+		Goals 框里输入：区分打 jar、war包 
+		org.apache.maven.plugins:maven-jar-plugin:2.4:jar org.springframework.boot:spring-boot-maven-plugin:1.5.9.RELEASE:repackage
+		
+	
+	3、项目上右键单击 》 Run as 》 Maven Install

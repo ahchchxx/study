@@ -1,0 +1,60 @@
+备记
+
+护眼色RGB
+197		224		179		#C5E0B3
+205		230		205		#CDE6CD
+
+操作系统	主题、背景色。 win10电脑，设置完成后要先“注销”电脑（任务栏“开始”右键）
+	win10 系统	HKEY_CURRENT_USER\Control Panel\Desktop\Colors : window
+				HKEY_CURRENT_USER\Control Panel\Desktop : window
+				HKEY_CURRENT_USER\Control Panel\Colors : window
+	修改另一个注册表，保证休眠后（Win+L也一样）不会变白的
+	HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\DefaultColors\Standard		Windows
+	
+Windows 7 右键的一些配置
+	桌面上右键菜单，去除ACE（AMD显卡）、igfxcui（intel显卡）、NvCplDesktopContext（英伟达）
+	HKEY_CLASSES_ROOT\Directory\Background\shellex\ContextMenuHandlers\
+	桌面上右键 -> 新建，控制菜单的个数，修改参数【修改完之后自动恢复~】
+	HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\
+		Discardable\PostSetup\ShellNew\Classes
+
+
+装机基本软件
+	基本工具
+		office 办公软件
+		百度输入法
+		FSCapture 超级工具
+		firefox	配置快捷菜单、添加广告屏蔽插件 AdBlocker Ultimate、Rest CLient、夜间助手
+		chrome 配置一个快捷键，打开支持跨域
+			C:\Users\HROne\AppData\Local\Google\Chrome\Application\chrome.exe --disable-web-security --user-data-dir=D:\application\chromeCors
+		pdf阅读器	关闭自动更新，修改：背记颜色；页面颜色：从标签跳转之后的不换放缩比例
+		Tim
+		微信桌面版
+		QQ 播放器，迷你版
+	IDE
+		jdk	
+		nodejs
+		nodepad++ 配置字体大小、背景颜色
+		eclipse
+		vs code
+	中间件
+		maven	D:\application\apache-maven-repository\
+			maven settings.xml
+	远程连接
+		FlashFXP-ftp 破解版
+		SecureCRT6.5.0 破解版
+		Putty(free)
+	VmWare
+		Windows和Linux共享文件、文件夹的工具：VMTools 安装使用
+		http://blog.chinaunix.net/uid-27717694-id-3834143.html
+		Settings > Options > Shared Folders
+
+
+反射、泛型、集合、委托、事件、匿名方法
+[序列化]
+【上面的这些是高级语法，心情安静，有空的时候再学吧~】
+
+
+
+
+

@@ -1,0 +1,74 @@
+
+下载 jdk
+https://www.oracle.com/technetwork/java/javase/downloads/jdk12-downloads-5295953.html
+https://www.oracle.com/java/technologies/javase-jdk13-downloads.html
+
+安装
+
+配置环境变量
+	在系统变量中需要新建2个变量，大小写不区分，如果存在相同变量名，请使用编辑修改变量值。
+    JAVA_HOME ：变量值为  C:\Program Files\Java\jre1.8.0_161
+	CLASSPATH ：变量值添加为  ;%JAVA_HOME%\lib;
+			或：;%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;
+
+测试是否安装成功
+	java -version
+
+windows server 2012r2
+	JAVA_HOME	C:\Program Files\Java\jdk1.8.0_144
+	Path		C:\ProgramData\Oracle\Java\javapath;%JAVA_HOME%\bin;
+				%SystemRoot%\system32;
+				%SystemRoot%;
+				%SystemRoot%\System32\Wbem;
+				%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;
+				%JAVA_HOME%\bin;
+				%JAVA_HOME%\jre\bin;
+	classpath	.;%JAVA_HOME%\lib;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar;
+
+
+
+windows server 2012r2
+	Path		;%JAVA_HOME%\lib;%JAVA_HOME%\bin;
+	classpath	.;%JAVA_HOME%\lib;%JAVA_HOME%\bin;
+
+我的windows 10 系统
+	JAVA_HOME	C:\Program Files\Java\jdk1.8.0_144
+	Path		%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;
+	classpath	.;%JAVA_HOME%\lib;%JAVA_HOME%\lib\tools.jar
+
+命令维护
+	set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_144
+	set Path=%Path%;%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;
+	
+	set Path=%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;
+	
+	set classpath=.;%JAVA_HOME%\lib;%JAVA_HOME%\lib\tools.jar
+
+
+
+--------------- linux 环境搭建 -----------------------------------
+第一步：下载
+下载linux对应版本的jdk到/usr/local，然后解压：
+	$ wget http://download.oracle.com/otn-pub/java/jdk/7u79-b15/jdk-7u79-linux-x64.tar.gz
+	$ tar -zxvf jdk-8u66-linux-x64.tar.gz
+	$ mv jdk1.7.0_79 jdk1.7          # 重命名
+
+修改 .bash_profile 文件
+	#configuration java development enviroument
+	export JAVA_HOME=/usr/local/jdk1.7
+	export PATH=$JAVA_HOME/bin:$PATH 
+	export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar 
+
+	export JAVA_HOME=/home/nnseat/javaweb/jdk
+	export PATH=$JAVA_HOME/bin:$PATH:$HOME/bin
+	#export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+	export CLASSPATH=.:$JAVA_HOME/lib
+
+重新加载系统配置文件:
+	source /etc/profile
+
+检查jdk 是否安装成功:
+	java -version
+
+
+

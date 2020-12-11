@@ -1,0 +1,52 @@
+XML文件，包含各种sql语句
+	1，模糊查询  like '%'| #{condition.iataCode} |'%'
+
+	2，转义字符
+		&lt;	<
+		&gt;	>
+		&amp;	&
+		&quot;	"
+		
+		<![CDATA[需要特殊过滤的XML内容]]>
+	
+
+获取自增主键 - oracle
+    <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+        SELECT SEQ_BAG.nextval AS id FROM dual
+  	</selectKey>
+获取自增主键 - sql Server
+	<selectKey keyProperty="scsId" order="AFTER" resultType="java.lang.Integer">
+		select IDENT_CURRENT('TB_SCS_INFO')
+		
+		select @@IDENTITY  
+	</selectKey>
+
+#{fieldName} 与 ${fieldName} 的区别
+	#号，进行字符串替换，使用预编译的语句，
+		即底层使用JDBC的 PreparedStatement 占位符? 进行参数化处理。
+	$号，底层使用Statement ,字符串拼接。可能会有SQL注入。
+		写在${}里面的内容必须有get方法。
+		
+多个 String 参数的情况，参数类型写String，直接用即可
+	parameterType="java.lang.String" 
+
+【入参按逗号分隔】
+    select * from table
+    where ids in 
+    <foreach item="item" index="index" collection="ids.split(’,’)"  open="(" separator="," close=")">
+                #{item}
+    </foreach>
+
+
+【入参 switch】 ▲ 用于判断的字符串，不能是单个字符哦，否则会报错^-^
+		<choose>
+            <when test="condition.bagFlag!=null and condition.bagFlag=='handbag'">
+            	T_CHECK
+            </when>
+            <when test="condition.bagFlag!=null and condition.bagFlag=='luggage'">
+            	T_BAGGAGE_CHK
+            </when>
+            <otherwise>
+            	T_CHECK
+            </otherwise>
+        </choose>  

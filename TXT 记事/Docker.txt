@@ -1,0 +1,171 @@
+
+【教程】
+	https://www.runoob.com/docker/docker-tutorial.html
+完整命令
+	https://www.runoob.com/docker/docker-command-manual.html
+
+	《VMware中安装 Ubuntu16、Docker.docx》
+
+docker镜像存储在哪里
+	https://blog.csdn.net/qq_30764991/article/details/81873610
+
+
+【视频教程截图】
+	D:\application\ScreenCut\阶段5 1.Docker容器化
+
+★ 重要概念：
+	镜像 images
+	容器 container
+	
+【安装】
+	通过包安装，指导文档
+		https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-from-a-package
+		下载
+			containerd.io_1.2.0-1_amd64.deb
+			docker-ce-cli_18.09.0~3-0~ubuntu-xenial_amd64.deb
+			docker-ce_18.09.0~3-0~ubuntu-xenial_amd64.deb
+		dpkg -i xxx.deb 再依次安装
+	安装时有个依赖报错，需要安装依赖的包
+		libltdl7 2.4.6的包，下载：
+		wget http://launchpadlibrarian.net/236916213/libltdl7_2.4.6-0.1_amd64.deb
+
+	启动
+		systemctl start docker
+	守护进程重启
+		systemctl daemon-reload
+	重启docker服务
+		service docker restart
+		systemctl restart docker
+	关闭
+		service docker stop
+		systemctl stop docker
+
+【镜像修改命令】
+	查看镜像
+		docker images
+		
+	搜索镜像
+		docker search 镜像名称
+		
+	拉取（下载）镜像
+		docker pull 镜像名称
+		docker pull odoo:13	拉取指定版本的镜像
+		docker pull postgres:10
+
+	删除镜像
+		docker rmi 镜像名称
+
+
+【容器相关命令】
+	显示在运行的容器
+		docker ps
+	查看所有的容器
+		docker ps -a
+	
+	查看所有容器运行状态
+		docker stats
+		docker stats --format "table {{.Container}}\t{{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemUsage}}\t{{.NetIO}}\t{{.BlockIO}}\t{{.PIDs}}"
+		
+	创建、启动新容器 ★参见教程： 08.创建启动与查看容器[20190525-2001010].jpg
+		分类：
+		1，交互式
+			docker run -it --name=容器名称 镜像名称
+		2，守护式（后台运行）
+			docker run -di --name=容器名称 镜像名称
+		-p 端口映射
+		-v 路径地址映射
+		-e 添加环境变量
+		--link 关联别的容器
+		-m 设置最大内存,  -m 2g
+	修改正在运行的容器 -m 内存大小 ？
+		docker update -m 1500M --memory-swap 1500M  897a6a09807a
+		docker update -m 4G ea9d46fd37c4
+	修改容器的 CPU 资源
+		–cpuset-cpus=”” 	允许使用的 CPU 集，格式可以为 0-3, 0,1
+		-c,–cpu-shares=0 	CPU 共享权值（相对权重）
+		cpu-period=0 	限制 CPU CFS 的周期，范围从 100ms~1s，即[1000, 1000000]
+		–cpu-quota=0 	限制 CPU CFS 配额，必须不小于1ms，即 >= 1000
+		–cpuset-mems=”” 	允许在其上执行的内存节点（MEMs），只对 NUMA 系统有效
+
+		docker run -it --cpu-period=50000 --cpu-quota=25000 ubuntu:16.04 /bin/bash
+		#将 CFS 调度的周期设为 50000，将容器在每个周期内的 CPU 配额设置为 25000，表示该容器每 50ms 可以得到 50% 的 CPU 运行时间。
+
+		docker run -it --cpu-period=10000 --cpu-quota=20000 ubuntu:16.04 /bin/bash
+		#将容器的 CPU 配额设置为 CFS 周期的两倍，CPU 使用时间怎么会比周期大呢？
+		#其实很好解释，给容器分配两个 vCPU 就可以了。该配置表示容器可以在每个周期内使用两个 vCPU 的 100% 时间。
+
+	启动、停止容器
+		docker start 容器名称，或容器ID
+		docker stop 容器名称，或容器ID
+
+	进入容器
+		docker exec -it [容器id，必填] /bin/bash
+		docker exec -it cron-20171124102754 bash
+	退出容器
+		exit
+		或者快捷键  ctrl + d
+		
+	容器删除
+		docker rm -f 容器名称，或容器ID
+
+	容器的日志
+		docker logs 容器名称，或容器ID
+		docker logs -f --tail 100 odoo
+		docker logs --tail 100 odoo
+
+	容器修改名称
+		docker rename 原容器名  新容器名
+
+	容器变成镜像
+		docker commit [容器名] [新镜像名]
+
+	容器备份
+
+	容器导出。注意，这个操作要先关掉容器
+		docker export <容器名> > <保存路径>
+	容器导入
+		docker import <文件路径>  <容器名>
+
+	修改配置
+		vim /var/lib/docker/containers/container-ID/config.v2.json
+		vim /var/lib/docker/containers/container-ID/hostconfig.json
+
+
+【镜像操作】
+	镜像/容器的详情
+		docker inspect 镜像/容器的名称，或ID
+	镜像导出。 导入、导出是成对使用的，注意宿主机配置要一样
+		docker save -o <保存路径> <镜像名称:标签>
+		docker save -o ./ubuntu18.tar ubuntu:18.04 
+	镜像导入
+		docker load --input ./ubuntu18.tar
+
+	修改镜像的repository 和 tag
+		docker tag IMAGEID(镜像id) REPOSITORY:TAG（仓库：标签）
+
+	登录仓库
+		docker login hub.ersoft.cn:5000
+		
+	删除镜像
+		docker rmi [image]
+
+
+【宿主机与container 文件互传】
+	下载文件
+		docker cp a1c75f00eff6:/etc/nginx/sites-enabled/peoplus.conf /root/bk_test
+	下载文件夹
+		docker cp a1c75f00eff6:/etc/nginx/ /root/bk_test
+	上传文件夹
+		docker cp /root/bk_test a1c75f00eff6:/etc/nginx/
+
+
+docker容器存放的位置
+	/var/lib/docker/containers/
+
+1，物理机和各docker容器之间是通过内网IP联通的。
+相关的参数：
+	挂载mounts、容器暴露端口ExposedPorts、面对宿主开放的ports（改config.v2.json文件）
+	容器之间的连接links（hostconfig.json文件）
+2，操作docker的命令集合，etctl
+	/usr/local/bin/etctl
+

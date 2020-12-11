@@ -1,0 +1,68 @@
+
+【Node.js 教程】
+1，安装
+
+2，NPM 安装第三方插件
+	npm install xxx
+	npm uninstall xxx
+
+3，通过 事件监听、回调 实现异步
+
+4，缓存的读、写
+	const buf = Buffer.alloc(10);
+	buf.write(string[, offset[, length]][, encoding])
+	buf.toString([encoding[, start[, end]]])
+
+5，文件的读、写
+	var fs = require("fs");
+	fs.createReadStream
+	fs.createWriteStream
+	
+	// 异步读取
+	fs.readFile
+	// 同步读取
+	fs.readFileSync
+
+6，js文件、模块，exports声明公开的接口，require引用外部接口
+
+
+【NPM】
+清空缓存
+	npm cache clean
+安装 package.json 里的所有依赖
+	npm install
+安装某个包
+	npm install xxx --registry=https://r.npm.taobao.org
+卸载某个包
+	npm uninstall xxx
+
+创建 package.json 文件
+	npm init
+
+国内安装 yarn
+	npm install yarn -g
+通过 yarn 安装包
+	yarn install
+	
+
+更新全局包：
+	npm update <name> -g
+更新生产环境依赖包：
+	npm update <name> --save
+更新开发环境依赖包：
+	npm update <name> --save-dev
+
+【运行】
+	npm run dev
+
+【打包】
+	npm run build
+
+
+【环境、软件】
+	nodejs、npm
+	vs code
+
+【在线代码调试】
+	https://codesandbox.io/s/wk04r016q8
+

@@ -1,0 +1,106 @@
+【Eclipse使用技巧】
+	自动提示 alt + /
+	代码自动提示
+		Eclipse -> Window -> Perferences ->Java ->Editor ->Content Assist
+		Auto activation triggers for Java
+			.abcdefghijklmnopqrstuvwxyz
+		
+	
+【代码块生成快捷键】
+	sysout	→ 	System.out.println();
+	main	→ 	public static void main(String[] args) { }
+
+	快捷键
+		检索资源
+			ctrl + shift + R
+			ctrl + shift + T
+		导入、清空无效引用
+			ctrl + shift + O
+		删除一行
+			ctrl + d
+		自动定义变量（光标放在行末）
+			Alt + Shift + L
+		快速看类的父子类关系、接口的实现类
+			Ctrl + T
+		查看类的成员
+			ctrl + o
+		查看被引
+			ctrl + shift + G
+		折叠全部代码
+			ctrl + shift + /（小键盘的）
+		打开全部代码
+			ctrl + *（小键盘的）
+			
+	Explore里面右上角的双向箭头来关联editor文档，包按层级打开	
+	在Preferences的General里，修改文档模式 单击打开
+
+	可以配置多个workstation供切换，但要重新配置一些参数
+
+	配置里Code Templates，设置注释的模板，快捷键 Shift + Alt + J
+		/** 
+		* @ClassName: ${type_name}
+		* @Description: ${tags}
+		* @author ${user}
+		* @date ${date} ${time}
+		*/
+		/** 
+		* @Title: ${enclosing_method}
+		* @Description: 
+		* @param 
+		* @return ${return_type}
+		*/
+		//只有部分Eclipse支持 @date ${currentDate:date('yyyy-MM-dd HH:mm:ss')}
+		
+	SVN里的配置与使用方法
+		《Eclipse中首次提交本地项目到SVN的方法》配置Team里忽略的文件类型，eg:bin、.path
+		Eclipse的“团队同步”窗口，选择：提交（上传）、更新（下载覆盖）
+		遇到连不上SVN，可以把Eclipse的dropins文件夹里的文档拷贝到dropins，或每个插件单独一个文件夹
+		
+	代码当前行背景颜色
+			general > Editors > Text Editors > Current line highlight
+		debug断点的当前行背景颜色
+			general > editors > textEditors > annonations > debug 。。。之类改color
+	console窗口的背景颜色，找console即可
+	
+	单击或选中部分在代码中全部高亮显示
+		搜 Mark Occurrences，全选即可
+	Perspective窗口，在右上角只显示图标，不显示文字，右键去掉勾选的“show text”
+	查看类和类成员的定义，多用F3查看定义源，或用类的继承关系小窗口打开查看。
+	配置 debug 参数，项目工程文件的main.java入口
+		debug 》 Debug Configurations 》 Arguments 》 VM arguments
+		-Xmx256m -Dcom.cares.sh.baseDir=d:/ffp/conf/FfpServer
+	工作空间 Workspaces切换，菜单：File > Switch Workspace
+		常用Workspaces管理，在Preferences里面搜“Workspaces”
+	通过反射取得参数，需要勾选 Java Compiler 里的
+		Store information about method parameters (usable via reflection)
+		
+	导入工程
+		类型一：Existing Projects into Workspace
+		类型二：Projects from Folder or Archive
+		如果第一种方法不行，尝试用第二种
+	将SVN里的Web工程导入到Eclipse中
+		SVN窗口，右键项目选择“检出为”
+		
+		
+	Debug时，查看变量的值
+		在变量上可以右键，inspect对变量可以右键，inspect
+		
+svn ignore
+	通过svn客户端，右键 properties > New > Other 添加一个忽略的属性。
+	菜单 window --> Preferences --> Team --> Ignored Resources
+
+
+【eclipse 报错】
+	错误: 找不到或无法加载主类
+	eclipse 》 project 》 clean...
+
+【Lombook】
+https://www.cnblogs.com/justuntil/p/7120534.html
+把 lombook.jar 放在 eclipse 文件夹下面.
+	Java -jar lombok.jar
+在 eclipse.ini 里添加
+	-Xbootclasspath/a:lombok.jar
+	-javaagent:lombok.jar
+
+
+

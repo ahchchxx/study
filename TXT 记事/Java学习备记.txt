@@ -1,0 +1,189 @@
+
+Java学习备记
+
+1，IoC控制反转
+	IoC的全称是Inversion of Control，中文称为控制反转。
+	Martin Flower由根据它创造了一个新词：Dependency Injection，中文称为依赖注入。
+	这两个词讲的是一回事儿。依赖注入不能单独存在，需要在IOC基础之上完成操作。
+	IoC的实质是如何管理对象，传统意义上我们使用new方式来创建对象，
+	但在企业应用开发的过程中，大量的对象创建都在程序中维护很容易造成资源浪费，并且不利于程序的扩展。
+	spring 框架里面有 2 种实现方式：xml文件、注解
+
+	AOP，Aspect Oriented Programming
+		面向切面编程，增强代码
+		在不改变原有功能的情况下，赋予执行代码新的功能逻辑
+		如：对方法增加日志，分为：前置、后置、异常...
+	
+2，SSH三大框架应用在Javaee三层结构
+	Web层		struts框架。Action，不同的Bean操作。struts使用MVC框架
+	Service层	spring框架
+	Dao层		hibernate框架
+
+	SSM框架：Spring、SpringMVC、MyBatis
+
+关于MVC：
+	M - Model - JavaBean
+	V - View  - JSP
+	C - Control - Servlet
+
+
+注入的小结：
+	1，创建类的实例
+	2，给属性赋值。原本都是实例化一个对象，调用这个对象的方法。
+		现在只定义一个属性，自动给属性初始化。
+
+
+3，servlet与jsp？
+	servlet是jsp的基础。jsp代码先被jsp容器转换为servlet代码，然后编译为类
+	先有servlet再有jsp，方便Java代码和HTML页面代码的分离
+
+
+4，关于DB的CRUD。
+DBUtils、JDBC、spring的jdbcTemplate（就是对JDBC的封装）
+	1）增加
+		insert()
+	2）删除
+		delete()
+	3）修改
+		update()
+	4）查询
+		getAll()、getList()
+		getSingle()
+		getLength()
+
+
+javabean 和 其它类型的互转
+主要用到反射的知识，读写值
+	类：Class
+	子类与父类：Class
+	实现的接口：Interface
+	构造函数：Constructor
+	变量：Field
+	方法：Method
+		方法的形参：method.getTypeParameters() 
+	注解：Annotation，@interface 里面定义的未实现的方法，可以设置这个方法值，像变量一样用
+		注解可以加在类、变量、方法、参数等上面
+		
+
+★ 当前任务：
+2.1，学FfpWeb的响应服务代码
+  从 BaseServlet 里的 doPost开始，理解请求、响应的流程
+  请求和响应的数据类型，纯文本、二进制、base64
+    获取请求的 get参数、post参数、body里的json格式数据、Header里的参数
+    响应 json等格式文本；输出 图片、文档等二进制数据
+    Web 和 Server 工程之间的数据传输，json 格式文档的生成、解析
+2.2，学FfpServer项目的启动代码，响应服务的源码
+2.3，FfpAPI的项目，纠结 里面的代码如何响应的？
+
+  短信、邮件、银行卡等第三方接口的使用
+
+
+【java】
+java监听器？ js回调函数？ C# 委托
+
+	
+	
+遇到看不懂的算法逻辑，可以用“特例法”，带入样例数据疏通流程。
+
+★ 【Java 学习】
+1，可以将接口看成没有实例化的抽象类。
+	抽象类可以被继承，子类可以重写父类方法
+	接口描述类能做什么，或具备什么能力？
+2，编译时不依赖，运行才依赖
+	eg. Class.forName("com.mysql...");  // 修改配置信息，不用重新编译
+3，工厂模式，获取对象
+4，类加载器，通过类名，获取配置信息
+	Properties props = new Properties();
+	InputStream in = 某Class.Class.getClassLoader().getResourceAsStream("bean.properties");
+	props.load(in);
+	
+	props.get(""); // 获取配置的节点信息
+5，获取配置信息
+	private static ResourceBundle cache = null;
+	static {
+		try {
+			cache = ResourceBundle.getBundle("properties file name");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public String getConfig(String key) {
+		return cache.getString(key);
+	}
+
+
+UML 图的图标意义：
+	接口上面有 ○- 这个符号，类上面没有
+	实现接口的箭头和连线是虚线，继承父类的箭头和连线是实线
+
+
+maven 仓库查询，多用 maven下载源码学习
+	看源码前，记得 download source 和 download document，要不然看的是反编译的
+	https://mvnrepository.com/
+
+
+Java 创建对象的方法
+	1，用 new语句创建对象，这是最常见的创建对象的方法。
+	2，调用对象的clone()方法。
+	3，运用反射手段,调用java.lang.Class或者java.lang.reflect.Constructor类的newInstance()实例方法。
+		如：Object obj = Class.forName(“java.lang.Object”).newInstance();
+			LogDao logDao = LogDao.class.newInstance();  
+			或 logDao.getClass().newInstance();
+	4，通过I/O流（包括反序列化），如运用反序列化手段，调用java.io.ObjectInputStream对象的 readObject()方法。
+	5，通过工厂方法返回对象，如：String str = String.valueOf(23);
+
+
+【Java 注解】
+成员变量可以是不同类型的字段、各种类型的数组
+可以嵌套定义注解
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.TYPE)
+	@Documented
+	public @interface ComponentScan {
+
+		@AliasFor("basePackages")
+		String[] value() default {};
+		
+		@AliasFor("value")
+		String[] basePackages() default {};
+		
+		Class<?>[] basePackageClasses() default {};
+
+		Filter[] excludeFilters() default {};
+
+		boolean lazyInit() default false;
+
+
+		@Retention(RetentionPolicy.RUNTIME)
+		@Target({})
+		@interface Filter { // 嵌套定义的注解
+			FilterType type() default FilterType.ANNOTATION;
+		}
+	}
+
+【IO相关】
+获取当前工程的目录
+	System.getProperty("user.dir")
+	System.getProperty("java.class.path").split(";")[0]
+
+【模拟线程】新建并发线程
+或者新建 Thread thread 对象，thread.start();// 这个方式只能一个个新建
+	CountDownLatch countDownLatch = new CountDownLatch(1);
+	ExecutorService executorService = Executors.newFixedThreadPool(10);// 批量创建 10个，线程几乎同时执行
+	for(int i=0; i<10; i++){
+		executorService.submit(() -> {
+			try {
+				countDownLatch.await();
+				System.out.println("Thread:"+Thread.currentThread().getName()+", time:" + System.currentTimeMillis());
+				// doSomeThing
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+	}
+	countDownLatch.countDown();
+
+
+rt.jar 源代码位置
+	C:/Program Files/Java/jdk1.8.0_144/src.zip
+

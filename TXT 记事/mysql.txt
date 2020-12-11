@@ -1,0 +1,84 @@
+
+【程序管理命令】
+查看是否运行
+	ps -ef | grep mysqld
+
+启动
+	root@host# cd /usr/bin
+	./mysqld_safe &
+
+关闭
+	root@host# cd /usr/bin
+	./mysqladmin -u root -p shutdown
+
+登录
+	mysql -u root -p
+
+退出
+	exit
+
+注意：在 mysql client 终端上，所有的命令要加“分号”结束
+
+
+【db命令】
+显示所有数据库
+	show databases;
+	
+显示数据库中所有的表
+	show tables;
+
+操作某个表
+	use 数据表;
+
+显示数据表的属性，属性类型，主键信息 ，是否为 NULL，默认值等其他信息。
+	show columns from 数据表;
+	
+显示数据表的详细索引信息，包括PRIMARY KEY（主键）。
+	show index from 数据表;
+
+创建数据库
+	create database 数据库名;
+
+创建数据表
+	create table table_name(column_name column_type);
+
+【binlog】
+分析 binlog 文件
+	mysqlbinlog --no-defaults --database=db  --base64-output=decode-rows -v --start-datetime='2019-04-11 00:00:00' --stop-datetime='2019-04-11 15:00:00'  mysql-bin.000007 | more
+
+解析并保存在 sql 文件中
+	mysqlbinlog --no-defaults --database=db  --base64-output=decode-rows -v --start-datetime='2019-04-11 00:00:00' --stop-datetime='2019-04-11 15:00:00'  mysql-bin.000007 >/tmp/binlog007.sql
+
+从 binlog 恢复数据
+	mysqlbinlog /tmp/mysql-bin.000010 | mysql -uroot -p  
+
+
+【连接字符串】
+    url: jdbc:mysql://127.0.0.1:3306/vplusdb?xxx
+		serverTimezone=GMT%2B8
+		&useUnicode=true
+		&characterEncoding=utf-8
+		&useSSL=false
+		&allowPublicKeyRetrieval=true
+		&autoReconnect=true
+		&failOverReadOnly=false
+    username: root
+    password: 123456
+    #driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+	
+代码生成器
+	jdbc:mysql://127.0.0.1:3306/hrone?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC
+	jdbc:mysql://127.0.0.1:3306/hrone?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+	注意加上的的多余 属性
+springboot
+	url: jdbc:mysql://127.0.0.1:3306/hrone?serverTimezone=GMT%2B8&useSSL=false&allowPublicKeyRetrieval=true
+
+
+【windows  下面命令】
+启动命令
+	net start mysql
+关闭命令
+	net stop mysql
+
+

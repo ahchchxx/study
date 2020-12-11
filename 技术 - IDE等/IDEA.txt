@@ -1,0 +1,59 @@
+
+【配置导入】
+	File > Manage Settings > import settings
+	Idea Setting.zip
+
+
+【配置】
+	设置背景护眼色
+	Settings > Editor > Color Scheme > General 修改编辑器背景色
+	Settings > Editor > Color Scheme > Console Colors > Console > Background  底部console对话框
+	Settings > Appearance & Behavior > File Color > 新增 + > All > Custom  左侧文件夹对话框
+
+【功能】
+	查看类的继承关系，Project 窗口，类上右键 > browse type hirearchy
+
+
+【插件】
+IDEA新建项目时，没有Spring Initializr这个选项。
+	在settings -> Plugins 里边搜Spring Assistant，安装完后重启idea
+禁止掉 kitlin，新建文件的时候，就没有这个选项了。
+禁止掉 ant、gradle
+安装插件 JRebel，实现对修改局部代码的热更新
+	《JRebel插件使用详解》 https://blog.csdn.net/lianghecai52171314/article/details/105637251
+	Editor里，按快捷键 Ctrl + Shift + F9 快速更新。运行后会提示有变化是否重新加载，选yes，从而进行热更新。
+
+可以直接拷贝、粘贴 “Idea plugins.zip” 到文件夹
+	D:\application\Idea202022\plugins
+
+
+【JDK】编译环境
+	Idea 的 file > Project Structure 配置当前项目的 jdk
+	工程里的 .iml 文件里配置， module > conponet > LANGUAGE_LEVEL="JDK_13"
+
+
+【快捷键】 Setting > keymap 搜索就行
+	快速赋值变量	ctrl+alt+/   （默认：ctrl+alt+v）
+	关闭tab		ctrl + w	（删掉当前的、冲突的，覆盖已有的）
+	取消注释在行首加 //， Settings > Editor > Code Style > Java > Code Generation > Comment Code > 去掉"Line comment..."， "Block com..."， 勾上 "Add a space..."
+
+
+修改 idea 创建变量的快捷键为： Ctrl + alt + / 
+	Settings > keymap > Introduce Variable
+
+idea lombok简介及报红、报错解决办法
+https://blog.csdn.net/daisy_zhangy/article/details/89873972
+
+
+【破解版】
+破解版安装教程
+	https://www.jb51.net/article/195962.htm
+
+
+
+【忽视一些文件】
+点击file->Settings->File types,在右下角的Ignore files and folders中，追加
+	.idea
+	*.iml，即可隐藏iml文件
+
+

@@ -1,0 +1,147 @@
+
+mongodb 非关系型数据库，文档型数据库
+
+	DB 安装文件
+		mongodb-win32-x86_64-2008plus-ssl-3.4.19-signed
+	DBMS：mongodb-compass
+		https://www.mongodb.com/download-center/compass
+
+教程：
+	https://www.runoob.com/mongodb/
+	
+【Windows下安装】
+在 D:\application\mongodb\手动创建两个空文件夹
+					\data\db
+					\log
+	并在 D:\application\mongodb\log 下面创建一个空的 mongo.log
+
+【Ubuntu下安装】
+https://www.jianshu.com/p/88304ea51da3
+setp 1. Import the public key used by the package management system.
+	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
+
+step 2. Create a list file for MongoDB
+	echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
+
+step 3. Reload local package database
+	sudo apt-get update
+
+step 4. Install the latest stable version of MongoDB
+	sudo apt-get install -y mongodb-org
+
+【配置】
+	vi /etc/mongod.conf
+
+【启动】
+启动mongodb服务，默认安装后，是启动mongodb服务的
+	sudo service mongod stop	#停止服务
+	sudo service mongod start	#启动服务
+	sudo service mongod restart	#重新启动服务
+	sudo service mongod status	#查看状态
+
+设置开机启动mongodb服务
+	sudo systemctl enable mongod
+
+● 连接服务器， shell 命令
+	在 bin 目录下
+	mongo
+	mongo 10.81.61.184
+	mongo --host 10.81.61.184:27017
+	mongo --host 10.81.61.184 --port 27017
+	mongo -u hrone -p aabb123 --host 10.81.61.184 --port 27017
+	mongo 10.81.61.184:27017/hrone -u hrone -p aabb123
+	mongo 192.168.11:27017/hrone -u hrone -p aabb123
+	mongo localhost:27017/hrone -u hrone -p aabb123
+
+【查看用户】
+	show users
+【添加用户】
+	# 切换到要添加用户的数据库中
+	>use mydb
+	>db.createUser({
+		user: 'test',
+		pwd: 'test123',
+		roles: [ { role: "readWrite", db: "mydb" } ]
+	})
+
+创建数据库
+	show dbs	// 查看所有数据库
+	use db_name	// 创建数据库。如果数据库不存在，则创建数据库，否则切换到指定数据库。
+
+操作：db 中包含 collection 集合，集合中 包含 document 文档。
+	对集合的操作：增、删、改、查
+		db.createCollection(name, options)
+		show collections
+	通过集合，对其所拥有的文档进行操作：增、删、改、查
+		db.collectionName.insert(document)
+		db.collectionName.find()
+		db.collectionName.find().pretty() 格式化输出
+	
+【备份数据库】直接在物理机上执行
+	mongodump -h dbhost -d dbname -o dbdirectory;
+	mongodump -h 10.81.61.184 --port 27017 -u hrone -p aabb123 -d hrone -o /tmp
+【还原数据库】
+	mongorestore -h IP --port 端口 -u 用户名 -p 密码 -d 数据库 --drop 文件存在路径
+	mongorestore -d hrone --drop /tmp/hrone
+
+
+
+=========== windows 系统下 ===============
+★ 启动服务器
+	在 bin 目录下
+	mongod --dbpath D:\application\mongodb\data\db --logpath=D:\application\mongodb\log\mongodb.log --logappend
+
+
+=====------ 基于 java 操作 mongodb ------==========
+● 增删改查
+		MongoClient mongoClient = new MongoClient("localhost", 27017);
+		MongoDatabase db = mongoClient.getDatabase("admin");
+		//db.createCollection("test2");
+		// 创建集合  		db > collection > document
+		// 对应关系型DB：	db > table > row
+		
+		Document d = new Document();
+		d.append("id", 1);
+		d.append("name", "zm");
+		Document doc = new Document();
+		doc.append("_id", 2);
+		doc.append("id", 2);
+		doc.append("name", "zm2");
+		
+		// CRUD 案例代码
+		MongoCollection<Document> collection = db.getCollection("test");
+		
+		// 1，增加
+		collection.insertOne(doc);
+		// 增加多个
+		// List<Document> list = new ArrayList<>();
+		// list.add(doc);
+		// collection.insertMany(list);
+		
+		// 2，删除
+		// collection.deleteOne(Filters.eq("name", "zm2"));
+		// 删除多个
+		// collection.deleteMany(Filters.all("name", "zm"));
+
+		// 3，修改
+		// FindOneAndUpdateOptions option = new FindOneAndUpdateOptions();
+		// option.upsert(true);
+		// Document dd = new Document();
+		// dd.append("$set", d);// ▲
+		// collection.findOneAndUpdate(new Document("_id", "5c7cde2c32c1698054112acb"), dd, option);
+
+		// 修改多个
+		Document document = new Document("$set", new Document("age", 100));
+		collection.updateMany(Filters.eq("name", "张三"), document);
+
+		// 4，查询 
+		FindIterable<Document> findIterable = collection.find();  
+        MongoCursor<Document> mongoCursor = findIterable.iterator();  
+        while(mongoCursor.hasNext()){  
+           System.out.println(mongoCursor.next());  
+        }
+
+
+● 索引
+● 聚合  等等
+

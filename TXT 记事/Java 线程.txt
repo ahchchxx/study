@@ -1,0 +1,65 @@
+
+启动新的线程
+
+方法一：继承 Thread 类
+步骤:
+	1）定义一个类 A 继承于Java.lang.Thread类.
+
+	2）在A类中覆盖Thread类中的run方法.
+
+	3）我们在run方法中编写需要执行的操作：run方法里的代码,线程执行体.
+
+	4）在main方法(线程)中，创建线程对象，并启动线程.
+		(1)创建线程类对象:
+			A类   a  =  new   A类();
+		(2)调用线程对象的start方法:
+			a.start();//启动一个线程
+
+
+方法二：实现 Runnable 接口
+步骤:
+	1）定义一个类A实现于java.lang.Runnable接口,注意A类不是线程类.
+
+	2）在A类中覆盖Runnable接口中的run方法.
+
+	3）我们在run方法中编写需要执行的操作：run方法里的,线程执行体.
+
+	4）在main方法(线程)中,创建线程对象,并启动线程.
+		 // 创建线程类对象:
+		 Thread  t = new Thread(new A());
+		 // 调用线程对象的start方法:
+		 t.start();
+
+
+方法三：直接在函数体使用（匿名内部类，其实也是属于第二种实现方式的特例）
+	Thread t = new Thread(new Runnable(){
+				public void run(){
+					// run方法具体重写
+					mSoundPoolMap.put(index, mSoundPool.load(filePath, index));
+					getThis().LoadMediaComplete();
+				}
+			});
+	t.start();
+
+分析继承方式和实现方式的区别:
+	1，继承方式:
+		1）从设计上分析，Java中类是单继承的，如果继承了Thread了,该类就不能再有其他的直接父类了.
+		2）从操作上分析，继承方式更简单，获取线程名字也简单.(操作上,更简单)
+		3）从多线程共享同一个资源上分析，继承方式不能做到.
+	2，实现方式:
+		1）从设计上分析，Java中类可以多实现接口,此时该类还可以继承其他类,并且还可以实现其他接口，设计更为合理.
+		2）从操作上分析,实现方式稍微复杂点,获取线程名字也比较复杂,得使用Thread.currentThread()来获取当前线程的引用.
+		3）从多线程共享同一个资源上分析,实现方式可以做到(是否共享同一个资源).
+
+
+
+补充：实现方式获取线程名字：
+String name = Thread.currentThread().getName();
+
+
+重载：函数的参数类型、参数个数
+重写：重写父类方法
+
+
+资源链接：
+	https://www.cnblogs.com/lgjava/p/9997126.html

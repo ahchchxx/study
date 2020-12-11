@@ -1,0 +1,20 @@
+
+Excel 2016  设置共享工作簿，显示操作菜单
+	https://zhidao.baidu.com/question/1243699366628689899.html
+
+Excel复制公式时怎么避免公式内容改变
+	https://jingyan.baidu.com/article/8cdccae90e2af7315513cd53.html
+
+关于 Excel 的常用公式，整理一下。“Excel 函数实操”，做培训，放在年后了。
+	大纲：workbook 里的基本概念（加：点线面选区、数据类型）；用九乘九表格演示：操作和运算；函数归类和典型函数讲解。
+	基本的，sum、round、cell、average、max、min、count。基本计算，sumif、countif
+	CONCATENATE(Q15, " ")
+	Vlookup(查找的值, 查找范围, 返回值在查找范围里的序号, 是否精确查找)
+	=SUMPRODUCT((LEFT('S-Payslip'!C:C, 3)= E1&"")*1)
+	https://jingyan.baidu.com/article/63f236287e54c40209ab3d56.html
+	基本概念、函数基本入门，=1+1， = A1 + A2
+	sumif、sumproduct
+	Excel 绝对引用与相对引用：
+		A1样式：A1——相对引用，横竖拉动公式都会变；A$1——列相对行绝对引用，横拉列标变而竖拉行标不会变
+		$A1——列绝对行相对引用，横拉列标不会变而竖拉行标会变。$A$1——横竖拉都不变。
+

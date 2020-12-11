@@ -1,0 +1,25 @@
+
+主题
+{
+    "workbench.colorTheme": "Visual Studio Light",
+    "workbench.colorCustomizations": {
+        "[Visual Studio Light]": {
+            "editor.background": "#C5E0B3",
+            "sideBar.background": "#C5E0B3"
+        },
+    }
+}
+
+安装了下面的插件
+    Auto Close Tag：自动闭合标签
+    Auto Rename Tag：自动重命名标签，配合上面的插件使用，基本上能赶上IDEA系的功能了
+    Path Intellisense：文件路径提示补全
+	Vetur	vue插件
+	vue-beautify
+	Chinese (Simplified) Language Pack for Visual Studio Code
+
+修改缩进 indent
+	取消勾选 Auto Indent、Detect Indentation
+	修改 Tab Size 为 2
+
+

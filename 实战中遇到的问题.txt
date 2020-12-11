@@ -1,0 +1,5 @@
+Oracle 的 sequence.NextValue()
+	做分布式的时候，NextValue() 不一定是最大值
+
+
+服务器时钟同步

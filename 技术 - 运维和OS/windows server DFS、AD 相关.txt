@@ -1,0 +1,8 @@
+【dfs、文件夹卷影】文件服务器搭建手册 
+干货 | 你们可能都小看了Windows！ 
+Windows Server 2016 存储复制浅谈（含完整测试过程） 
+
+Windows Server 2016 安装及配置DFS实现数据复制 https://blog.51cto.com/gaowenlong/1899283?from=groupmessage 
+
+Windows Server 2016 中添加AD域控制器 https://blog.51cto.com/lumay0526/2051317 
+

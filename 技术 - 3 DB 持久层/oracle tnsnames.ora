@@ -1,0 +1,21 @@
+# C:\Program Files (x86)\Oracle\Instant Client\network\admin
+
+# Modify the following content to fit your own needs.
+SMIS2019 =
+  (DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = 172.21.126.152)(PORT = 1521))
+    )
+    (CONNECT_DATA =
+      (SERVICE_NAME = smis2019)
+  )
+ )
+aMCP =
+  (DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.52.65)(PORT = 1521))
+    )
+    (CONNECT_DATA =
+      (SERVICE_NAME = orclpdb)
+    )
+  )

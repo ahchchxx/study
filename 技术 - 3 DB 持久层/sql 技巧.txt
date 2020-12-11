@@ -1,0 +1,165 @@
+
+【sql分页】
+一、mysql
+	limit firstIndex, pageSize
+	limit firstPageSize
+	例：select * from User limit 20,10  -- 返回第 3 页，21-30
+	select * from User where id>20 limit 10  -- 数据量比较大时，用这种分页，id自增
+	
+
+二、oracle
+	对 select 的结果再套一层 select，加 rownum 
+	例：
+		select s.* from (
+			   select rownum rn, t.* from T_LOG t where rownum <= 10  -- 范围边界最大值
+		) s where rn >5  -- 范围边界最小值，rn 的值记录了查询结果的行数
+
+三、微软的数据库
+1，sqlServer
+	也支持双 top 法
+
+2，access
+	双 top 法
+    select top 10 * from Users 
+		where id not in(
+			select top ((3-1)*10) id from Users
+		)
+
+
+【拷贝表】
+create table table_name  as  select  *  from  Source_table  where  1=1;
+
+【复制表结构】
+create table table_name  as  select  *  from  Source_table  where  1 <> 1;
+
+
+【oracle】
+读取第一行
+	where rownum=1
+	
+	
+移表操作，从数据库的已有信息中，读取后插入
+	insert into Table2(field1,field2,...) select value1,value2,... from Table1
+	insert into Table2 select * from Table1
+	
+
+创建 table 典型例子
+	create table T_HA_HB
+	(
+	  id             NUMBER(18) not null,
+	  service_name   VARCHAR2(50),
+	  service_client VARCHAR2(20),
+	  heartbeat      DATE,
+	  creator        VARCHAR2(20),
+	  create_at      DATE default SYSDATE,
+	  modifier       VARCHAR2(20),
+	  modify_at      DATE default SYSDATE,
+	  deleted        VARCHAR2(1) default 'N',
+	  constraint T_HA_HB primary key (ID)
+	);
+	
+创建 索引	
+	create index IDX_HA_HB on T_HA_HB (service_name);
+	
+创建 多列联合索引
+	alter table SC drop index sc_c_id_index;
+	alter table SC drop index sc_score_index;
+	create index sc_c_id_score_index on SC(c_id,score);
+
+创建 序列
+	ALTER SEQUENCE SEQ_TEST INCREMENT BY 1000;
+	SELECT SEQ_TEST.NEXTVAL FROM DUAL;
+	ALTER SEQUENCE SEQ_TEST INCREMENT BY 1;
+
+union和union all的区别
+	union 会自动压缩多个结果集合中的重复结果；
+	union all 则将所有的结果全部显示出来，不管是不是重复。
+	
+【mysql】
+分析 sql 的执行过程
+	explain sql
+
+
+【mysql 主从备份】学一下 sql 命令
+可以用于“读写分离”，master主库写入，几个slave从库只允许读取
+	https://www.cnblogs.com/cjsblog/p/9706370.html
+	会单独用一个端口创建Web工程，供主从之间进行数据同步
+	
+
+【sql调优总结】
+	1. 列类型尽量定义成数值类型，且长度尽可能短，如主键和外键，类型字段等等
+	2. 建立单列索引
+	3. 根据需要建立多列联合索引
+		当单个列过滤之后还有很多数据，那么索引的效率将会比较低，即列的区分度较低，
+		那么如果在多个列上建立索引，那么多个列的区分度就大多了，将会有显著的效率提高。
+	4. 根据业务场景建立覆盖索引
+		只查询业务需要的字段，如果这些字段被索引覆盖，将极大的提高查询效率
+	5. 多表连接的字段上需要建立索引
+		这样可以极大的提高表连接的效率
+	6. where条件字段上需要建立索引
+	7. 排序字段上需要建立索引
+	8. 分组字段上需要建立索引
+	9. Where条件上不要使用运算函数，以免索引失效
+
+【sql调优 12 大技巧】
+技巧1 比较运算符能用 “=”就不用“<>”
+	“=”增加了索引的使用几率。
+
+技巧2 明知只有一条查询结果，那请使用 “LIMIT 1”
+	“LIMIT 1”可以避免全表扫描，找到对应结果就不会再继续扫描了。
+
+技巧3 为列选择合适的数据类型
+	能用TINYINT就不用SMALLINT，能用SMALLINT就不用INT，道理你懂的，磁盘和内存消耗越小越好嘛。
+
+技巧4 将大的DELETE，UPDATE or INSERT 查询变成多个小查询
+	能写一个几十行、几百行的SQL语句是不是显得逼格很高？
+	然而，为了达到更好的性能以及更好的数据控制，你可以将他们变成多个小查询。
+	
+技巧5 使用UNION ALL 代替 UNION，如果结果集允许重复的话
+	因为 UNION ALL 不去重，效率高于 UNION。
+
+技巧6 为获得相同结果集的多次执行，请保持SQL语句前后一致
+	这样做的目的是为了充分利用查询缓冲。
+	那么第二次同样的查询，请保持以上语句的一致性，比如不要将where语句里面的id和region位置调换顺序。
+
+技巧7 尽量避免使用 “SELECT *”
+	如果不查询表中所有的列，尽量避免使用 SELECT *，因为它会进行全表扫描，不能有效利用索引，增大了数据库服务器的负担，
+	以及它与应用程序客户端之间的网络IO开销。
+
+技巧8 WHERE 子句里面的列尽量被索引
+	只是“尽量”哦，并不是说所有的列。
+	因地制宜，根据实际情况进行调整，因为有时索引太多也会降低性能。
+
+技巧9 JOIN 子句里面的列尽量被索引
+	同样只是“尽量”哦，并不是说所有的列。
+
+技巧10 ORDER BY 的列尽量被索引
+	ORDER BY的列如果被索引，性能也会更好。
+
+技巧11 使用 LIMIT 实现分页逻辑
+	不仅提高了性能，同时减少了不必要的数据库和应用间的网络传输。
+
+技巧12 使用 EXPLAIN 关键字去查看执行计划
+	EXPLAIN 可以检查索引使用情况以及扫描的行。
+
+
+
+sql优化的框架思路：
+● 设计数据库、表之前：
+	按照设计规范，范式规范；
+	字段的长度和大小尽量小；
+	字段尽量 not null，如 int类型的默认为 0
+	字段及其类型，要和 java 实体类成员一一对应，下划线命名和驼峰命名法
+	
+● 开发时：
+	多参考开发规范；
+		避免 select *，写上具体的字段列
+		避免使用 in，用 exsit
+		避免用 <>，使用 =
+		避免用 is null、is not null，使用等式判断
+● 运行时：
+	找出耗时比较长的sql语句，用 explain 单独分析，找出瓶颈
+
+
+
+

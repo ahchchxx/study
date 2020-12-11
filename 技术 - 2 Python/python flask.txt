@@ -1,0 +1,38 @@
+
+flasky ? 地址？
+C:\Users\zhou_min\Envs\flasky\lib\site-packages\
+
+pip 地址 ？
+ C:\Users\zhou_min\AppData\Local\pip\Cache\wheels\
+
+
+【在window下搭建falsk环境】
+
+windows安装一定记得添加环境变量到全局以及安装pip
+
+(1)安装虚拟环境 virtualenv
+	pip install virtualenv
+
+安装虚拟环境管理包 virtualenvwrapper-win
+	pip install virtualenvwrapper-win
+	
+(2) 安装flask
+	pip install flask==0.10.1
+
+(3)创建一个虚拟环境flasky
+	mkvirtualenv flasky
+
+(4)进入虚拟环境
+	workon flasky
+
+(5)安装依赖的包
+	pip install -r requirements.txt
+
+(6)搭建环境的效果，查看依赖的包
+	pip list
+
+(7)退出虚拟环境
+	deactivate flasky
+
+删除包
+	pip uninstall flask-mail

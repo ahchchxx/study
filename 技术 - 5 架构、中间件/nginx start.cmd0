@@ -1,0 +1,9 @@
+cd D:/application/nginx-1.16.1
+nginx -s stop
+
+start nginx
+
+echo nginx -s stop // to close nginx by pressing any key
+pause
+
+nginx -s stop

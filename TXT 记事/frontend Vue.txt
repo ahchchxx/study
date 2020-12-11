@@ -1,0 +1,241 @@
+
+# 全局安装 vue-cli
+	npm install --global vue-cli
+
+# 本工程安装
+	npm i
+	npm install
+
+# 创建一个基于 webpack 模板的新项目
+	vue init webpack my-project
+
+# 需要进行一些配置，默认回车即可
+# 省略一些步骤
+	cd my-project
+	cnpm install
+	cnpm run dev
+
+
+【.Vue 文件的一些注意事项】
+引入外部 css 文件
+	<style lang="scss">
+		// 注册主题
+		@import '~@/assets/style/theme/register.scss';
+	</style>
+	<style lang="less">
+		@import './login.less';
+	</style>
+	或者在 script 里引入	
+		import './main.less'
+
+绑定 class
+    <div v-bind:class="{green: date2!='' && date2>date1}">
+      {{date2}}
+    </div>
+    <div v-if="date2===''" v-bind:class="{ red: date2==='' && date1 < date0 }">
+      <!-- {{ date1 < date0 }} -->
+      a
+    </div>
+
+【mapActions 用法】
+就像楼上说的，直接用...mapActions(['方法名'])就可以调用，需要注意的是，mapActions必须先引用且要放在methods中。
+如果想要区分不同module中的话，可以在内部添加namespaced: true属性，然后在调用的时候采用...mapActions(模块名空间路径，['方法名'])既可。
+详情参考：https://vuex.vuejs.org/zh/guide/modules.html
+	...mapActions('d2admin/account', [
+      'login'
+    ]),
+引用的路径在 store/modules/ 下面， 啊啊啊啊啊啊啊啊啊 坑
+
+★ 格式方面：
+	末尾必须有空行
+	script 里面
+		字符串，要单引号
+		每行代码末尾不能加分号
+		引入组件，严格参照下面的例子
+	键、值对，键后面的冒号前面，不能有空格
+	方法名后面的括号前面，要有空格
+★ 调用方面
+	method 里面的方法，调用别的方法，this.methodName() 即可
+
+
+【表达式】
+<Button type="primary" @click="modalViewMoreVisible=false">OK</Button>
+<FormItem label="status">{{ formViewMore.status == 1 ? 'unread' : 'readed' }}</FormItem>
+<button v-on:click="counter += 1">增加 1</button>
+
+
+【完整样例一】
+<template>
+  <div>This will be pre-compiled</div>
+</template>
+<script src="./my-component.js"></script>
+<style src="./my-component.css"></style>
+
+【完整样例二】
+<template>
+  <div id="aa">
+    <p>
+      <input v-model="a" />
+    </p>
+    <p>{{a}}</p>
+    <p>{{b}}</p>
+    <button @click="fun(a)">哈哈</button>
+  </div>
+</template>
+
+<script>
+import D2HelpBtn from './components/d2-help-btn'
+export default {
+  name: 'example',
+  components: {
+	D2HelpBtn,
+    'PageHeader': () => import('./PageHeader')
+  },
+  props: {
+    collapsed: Boolean
+  },
+  data () {
+    return {
+      a: 1,
+      b: true
+    }
+  },
+  mounted () { // html加载完成后执行
+    this.handleSubmit(null) // 调用 methods 里的方法
+  },
+  methods: {
+    fun (a) {
+      this.a = a + this.a
+    }
+  }
+}
+</script>
+
+<style scoped>
+    /* *{margin: 0;padding: 0} */
+</style>
+
+
+
+
+
+
+====== ↓ D2Admin ====================
+
+路由跳转
+    <el-button @click="$router.replace({ path: '/' })">
+      返回首页
+    </el-button>
+JS 文档里的路由跳转，可携带参数
+	import router from '@/router'
+	router.push({
+		path: '/login',
+        params: {
+          id
+        }
+	})
+
+UI 组件
+	https://element.eleme.io/
+阿里飞冰，前端物料
+	https://ice.work/
+图标相关
+	http://www.fontawesome.com.cn/faicons/
+
+	
+	
+文档
+	https://doc.d2admin.fairyever.com/zh/
+线上完整样例
+	https://d2admin.fairyever.com/
+
+AJax 请求网络
+http://www.axios-js.com/docs/#Example
+
+【todo list】
+	菜单栏的国际化
+	tab 右键菜单，也要国际化
+	Calendar 列表页的操作：转成下拉菜单的形式
+	登录超时，如何自动跳出来 登录页？  登录页弹出框
+
+【主页】
+	都在 public/index.html
+
+【弹窗】
+右上角弹窗
+	this.$notify({
+		title: '模拟表格数据请求完毕'
+	})
+中间弹窗
+	this.$message({
+	  type: 'success',
+	  message: '删除成功!'
+	});
+
+组件之间调用，子组件，调用父组件，第二个参数是函数入参
+	this.$emit('submit', this.form)
+	this.$emit('add')
+【组件的属性】
+	固定的值：
+		title="Edit"
+    动态的值
+		:title="dialogTitle"  而不是 title="{Edit}"
+
+修改 .env 文件，先关闭调试，重新 start 一次
+
+登录相关
+	router
+		index.js	35行
+		  // 验证当前路由所有的匹配中是否需要有登录验证的
+		  if (to.matched.some(r => r.meta.auth)) {
+			// 这里暂时将cookie里是否存有token作为验证是否登录的条件
+			// 请根据自身业务需要修改
+			const token = util.cookies.get('token')
+
+【目录结构】
+  ├─ docs                    // 文档
+  ├─ packages                // 额外的包
+  ├─ public                  // 公共文件
+  ├─ src                     // 源码目录
+  │  ├─ assets                 // 资源
+  │  │  ├─ icons
+  │  │  ├─ image
+  │  │  ├─ library
+  │  │  └─ style
+  │  ├─ components             // 组件
+  │  │  ├─ charts
+  │  │  ├─ core
+  │  │  └─ demo
+  │  ├─ i18n                   // 多语言
+  │  ├─ menu                   // ★ 菜单，手动设置菜单，通过 path 地址进行路由跳转
+  │  ├─ mock                   // 模拟数据
+  │  ├─ pages                  // 页面
+  │  ├─ plugin                 // 插件
+  │  ├─ router                 // 路由
+  │  ├─ store                  // vuex
+  │  ├─ utils
+  │  ├─ App.vue
+  │  └─ main.js
+  ├─ tests                   // 测试文件
+  ├─ .browserslistrc         // 浏览器兼容设置
+  ├─ .env                    // 环境变量
+  ├─ .env.development        // 开发环境变量
+  ├─ .env.nomock             // nomock环境变量
+  ├─ .env.travis             // 生成环境变量
+  ├─ .eslintignore           // ESLint忽略
+  ├─ .eslintrc.js            // ESLint配置
+  ├─ .gitignore              // git忽略
+  ├─ .postcssrc.js           // postcss配置
+  ├─ .travis.yml             // 持续集成服务
+  ├─ babel.config.js         // babel配置
+  ├─ cdnrefresh-dirs.txt     // cdn设置
+  ├─ jest.config.js          // jest设置
+  ├─ LICENSE                 // 开源协议
+  ├─ package-lock.json       // 包文件锁版本
+  ├─ package.json            // 包文件
+  ├─ qiniu-config            // 七牛云配置
+  ├─ qshell                  // 七牛API服务命令行工具
+  ├─ README.md
+  |— README.zh.md                
+  ├─ vue.config.js           // vue配置
+
