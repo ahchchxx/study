@@ -638,7 +638,7 @@ vi /usr/local/rocketmq/bin/runbroker.sh
 JAVA_OPT="${JAVA_OPT} -server -Xms256m -Xmx256m -Xmn128m"
 ```
 
-####2）runserver.sh
+#### 2）runserver.sh
 
 ```sh
 vim /usr/local/rocketmq/bin/runserver.sh
@@ -667,7 +667,7 @@ master1：
 
 ```bash
 cd /usr/local/rocketmq/bin
-nohup sh mqbroker -c /usr/local/rocketmq/conf/2m-2s-syncbroker-a.properties &
+nohup sh mqbroker -c /usr/local/rocketmq/conf/2m-2s-sync/broker-a.properties &
 ```
 
 slave2：
@@ -714,244 +714,227 @@ tail -500f ~/logs/rocketmqlogs/broker.log
 
 进入RocketMQ安装位置，在bin目录下执行```./mqadmin {command} {args}``` 
 
-###3.4.2 命令介绍
+### 3.4.2 命令介绍
 
-####1）Topic相关
+####  1）Topic相关
 
-<table border=0 cellpadding=0 cellspacing=0 width=714>
- <col width=177>
- <col width=175>
- <col width=177>
- <col width=185>
- <tr height=23 style='height:17.0pt'>
-  <td height=23 class=xl63 width=177 style='height:17.0pt;width:133pt'>名称</td>
-  <td class=xl64 width=175 style='width:131pt'>含义</td>
-  <td class=xl64 width=177 style='width:133pt'>命令选项</td>
-  <td class=xl64 width=185 style='width:139pt'>说明</td>
+<table border=0 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=50>名称</td>
+  <td width=150>含义</td>
+  <td width=100>命令选项</td>
+  <td>说明</td>
  </tr>
- <tr height=132 style='height:99.0pt'>
-  <td rowspan=8 height=593 class=xl68 width=163 style='border-bottom:1.0pt;
-  height:444.0pt;border-top:none;width:122pt'>updateTopic</td>
-  <td rowspan=8 class=xl70 width=135 style='border-bottom:1.0pt;
-  border-top:none;width:101pt'>创建更新Topic配置</td>
-  <td class=xl65 width=149 style='width:112pt'>-b</td>
-  <td class=xl66 width=159 style='width:119pt'>Broker 地址，表示 topic 所在
-  Broker，只支持单台Broker，地址为ip:port</td>
+ <tr>
+  <td rowspan=8 style='border-bottom:1.0pt;border-top:none'>updateTopic</td>
+  <td rowspan=8 style='border-bottom:1.0pt; border-top:none'>创建更新Topic配置</td>
+  <td>-b</td>
+  <td>Broker 地址，表示 topic 所在 Broker，只支持单台Broker，地址为ip:port</td>
  </tr>
- <tr height=132 style='height:99.0pt'>
-  <td height=132 class=xl65 width=149 style='height:99.0pt;width:112pt'>-c</td>
-  <td class=xl66 width=159 style='width:119pt'>cluster 名称，表示 topic 所在集群（集群可通过
-  clusterList 查询）</td>
+ <tr>
+  <td>-c</td>
+  <td>cluster 名称，表示 topic 所在集群（集群可通过 clusterList 查询）</td>
  </tr>
- <tr height=23 style='height:17.0pt'>
-  <td height=23 class=xl65 width=149 style='height:17.0pt;width:112pt'>-h-</td>
-  <td class=xl66 width=159 style='width:119pt'>打印帮助</td>
+ <tr>
+  <td>-h-</td>
+  <td>打印帮助</td>
  </tr>
- <tr height=57 style='height:43.0pt'>
-  <td height=57 class=xl65 width=149 style='height:43.0pt;width:112pt'>-n</td>
-  <td class=xl66 width=159 style='width:119pt'>NameServer服务地址，格式 ip:port</td>
+ <tr>
+  <td>-n</td>
+  <td>NameServer服务地址，格式 ip:port</td>
  </tr>
- <tr height=76 style='height:57.0pt'>
-  <td height=76 class=xl65 width=149 style='height:57.0pt;width:112pt'>-p</td>
-  <td class=xl66 width=159 style='width:119pt'>指定新topic的读写权限( W=2|R=4|WR=6 )</td>
+ <tr>
+  <td>-p</td>
+  <td>指定新topic的读写权限( W=2|R=4|WR=6 )</td>
  </tr>
- <tr height=39 style='height:29.0pt'>
-  <td height=39 class=xl65 width=149 style='height:29.0pt;width:112pt'>-r</td>
-  <td class=xl66 width=159 style='width:119pt'>可读队列数（默认为 8）</td>
+ <tr>
+  <td>-r</td>
+  <td>可读队列数（默认为 8）</td>
  </tr>
- <tr height=39 style='height:29.0pt'>
-  <td height=39 class=xl65 width=149 style='height:29.0pt;width:112pt'>-w</td>
-  <td class=xl66 width=159 style='width:119pt'>可写队列数（默认为 8）</td>
+ <tr>
+  <td>-w</td>
+  <td>可写队列数（默认为 8）</td>
  </tr>
- <tr height=95 style='height:71.0pt'>
-  <td height=95 class=xl65 width=149 style='height:71.0pt;width:112pt'>-t</td>
-  <td class=xl66 width=159 style='width:119pt'>topic 名称（名称只能使用字符
+ <tr>
+  <td>-t</td>
+  <td>topic 名称（名称只能使用字符
   ^[a-zA-Z0-9_-]+$ ）</td>
  </tr>
- <tr height=132 style='height:99.0pt'>
-  <td rowspan=4 height=307 class=xl68 width=163 style='border-bottom:1.0pt;
-  height:230.0pt;border-top:none;width:122pt'>deleteTopic</td>
-  <td rowspan=4 class=xl70 width=135 style='border-bottom:1.0pt;
-  border-top:none;width:101pt'>删除Topic</td>
-  <td class=xl65 width=149 style='width:112pt'>-c</td>
-  <td class=xl66 width=159 style='width:119pt'>cluster 名称，表示删除某集群下的某个 topic （集群
-  可通过 clusterList 查询）</td>
+ <tr>
+  <td rowspan=4 style='border-bottom:1.0pt;border-top:none;'>deleteTopic</td>
+  <td rowspan=4 style='border-bottom:1.0pt; border-top:none'>删除Topic</td>
+  <td>-c</td>
+  <td>cluster 名称，表示删除某集群下的某个 topic （集群可通过 clusterList 查询）</td>
  </tr>
- <tr height=23 style='height:17.0pt'>
-  <td height=23 class=xl65 width=149 style='height:17.0pt;width:112pt'>-h</td>
-  <td class=xl66 width=159 style='width:119pt'>打印帮助</td>
+ <tr>
+  <td>-h</td>
+  <td>打印帮助</td>
  </tr>
- <tr height=57 style='height:43.0pt'>
-  <td height=57 class=xl65 width=149 style='height:43.0pt;width:112pt'>-n</td>
-  <td class=xl66 width=159 style='width:119pt'>NameServer 服务地址，格式 ip:port</td>
+ <tr>
+  <td>-n</td>
+  <td>NameServer 服务地址，格式 ip:port</td>
  </tr>
- <tr height=95 style='height:71.0pt'>
-  <td height=95 class=xl65 width=149 style='height:71.0pt;width:112pt'>-t</td>
-  <td class=xl66 width=159 style='width:119pt'>topic 名称（名称只能使用字符
+ <tr>
+  <td>-t</td>
+  <td>topic 名称（名称只能使用字符
   ^[a-zA-Z0-9_-]+$ ）</td>
  </tr>
- <tr height=23 style='height:17.0pt'>
-  <td rowspan=3 height=287 class=xl68 width=163 style='border-bottom:1.0pt;
-  height:215.0pt;border-top:none;width:122pt'>topicList</td>
-  <td rowspan=3 class=xl70 width=135 style='border-bottom:1.0pt;
-  border-top:none;width:101pt'>查看 Topic 列表信息</td>
-  <td class=xl65 width=149 style='width:112pt'>-h</td>
-  <td class=xl66 width=159 style='width:119pt'>打印帮助</td>
+ <tr>
+  <td rowspan=3 style='border-bottom:1.0pt; border-top:none;'>topicList</td>
+  <td rowspan=3 style='border-bottom:1.0pt; border-top:none'>查看 Topic 列表信息</td>
+  <td>-h</td>
+  <td>打印帮助</td>
  </tr>
- <tr height=207 style='height:155.0pt'>
-  <td height=207 class=xl65 width=149 style='height:155.0pt;width:112pt'>-c</td>
-  <td class=xl66 width=159 style='width:119pt'>不配置-c只返回topic列表，增加-c返回clusterName,
+ <tr>
+  <td>-c</td>
+  <td>不配置-c只返回topic列表，增加-c返回clusterName,
   topic, consumerGroup信息，即topic的所属集群和订阅关系，没有参数</td>
  </tr>
- <tr height=57 style='height:43.0pt'>
-  <td height=57 class=xl65 width=149 style='height:43.0pt;width:112pt'>-n</td>
-  <td class=xl66 width=159 style='width:119pt'>NameServer 服务地址，格式 ip:port</td>
+ <tr>
+  <td>-n</td>
+  <td>NameServer 服务地址，格式 ip:port</td>
  </tr>
- <tr height=23 style='height:17.0pt'>
-  <td rowspan=3 height=103 class=xl68 width=163 style='border-bottom:1.0pt;
-  height:77.0pt;border-top:none;width:122pt'>topicRoute</td>
-  <td rowspan=3 class=xl70 width=135 style='border-bottom:1.0pt;
-  border-top:none;width:101pt'>查看 Topic 路由信息</td>
-  <td class=xl65 width=149 style='width:112pt'>-t</td>
-  <td class=xl66 width=159 style='width:119pt'>topic 名称</td>
+ <tr>
+  <td rowspan=3 style='border-bottom:1.0pt; border-top:none;'>topicRoute</td>
+  <td rowspan=3 style='border-bottom:1.0pt; border-top:none'>查看 Topic 路由信息</td>
+  <td>-t</td>
+  <td>topic 名称</td>
  </tr>
- <tr height=23 style='height:17.0pt'>
-  <td height=23 class=xl65 width=149 style='height:17.0pt;width:112pt'>-h</td>
-  <td class=xl66 width=159 style='width:119pt'>打印帮助</td>
+ <tr>
+  <td>-h</td>
+  <td>打印帮助</td>
  </tr>
- <tr height=57 style='height:43.0pt'>
-  <td height=57 class=xl65 width=149 style='height:43.0pt;width:112pt'>-n</td>
-  <td class=xl66 width=159 style='width:119pt'>NameServer 服务地址，格式 ip:port</td>
+ <tr>
+  <td>-n</td>
+  <td>NameServer 服务地址，格式 ip:port</td>
  </tr>
- <tr height=23 style='height:17.0pt'>
-  <td rowspan=3 height=103 class=xl68 width=163 style='border-bottom:1.0pt;
-  height:77.0pt;border-top:none;width:122pt'>topicStatus</td>
-  <td rowspan=3 class=xl70 width=135 style='border-bottom:1.0pt;
-  border-top:none;width:101pt'>查看 Topic 消息队列offset</td>
-  <td class=xl65 width=149 style='width:112pt'>-t</td>
-  <td class=xl66 width=159 style='width:119pt'>topic 名称</td>
+ <tr>
+  <td rowspan=3 style='border-bottom:1.0pt;
+ border-top:none;'>topicStatus</td>
+  <td rowspan=3 style='border-bottom:1.0pt;
+  border-top:none'>查看 Topic 消息队列offset</td>
+  <td>-t</td>
+  <td>topic 名称</td>
  </tr>
- <tr height=23 style='height:17.0pt'>
-  <td height=23 class=xl65 width=149 style='height:17.0pt;width:112pt'>-h</td>
-  <td class=xl66 width=159 style='width:119pt'>打印帮助</td>
+ <tr>
+  <td>-h</td>
+  <td>打印帮助</td>
  </tr>
- <tr height=57 style='height:43.0pt'>
-  <td height=57 class=xl65 width=149 style='height:43.0pt;width:112pt'>-n</td>
-  <td class=xl66 width=159 style='width:119pt'>NameServer 服务地址，格式 ip:port</td>
+ <tr>
+  <td>-n</td>
+  <td>NameServer 服务地址，格式 ip:port</td>
  </tr>
- <tr height=23 style='height:17.0pt'>
-  <td rowspan=3 height=103 class=xl68 width=163 style='border-bottom:1.0pt;
-  height:77.0pt;border-top:none;width:122pt'>topicClusterList</td>
-  <td rowspan=3 class=xl70 width=135 style='border-bottom:1.0pt;
-  border-top:none;width:101pt'>查看 Topic 所在集群列表</td>
-  <td class=xl65 width=149 style='width:112pt'>-t</td>
-  <td class=xl66 width=159 style='width:119pt'>topic 名称</td>
+ <tr>
+  <td rowspan=3 style='border-bottom:1.0pt;
+ border-top:none;'>topicClusterList</td>
+  <td rowspan=3 style='border-bottom:1.0pt;
+  border-top:none'>查看 Topic 所在集群列表</td>
+  <td>-t</td>
+  <td>topic 名称</td>
  </tr>
- <tr height=23 style='height:17.0pt'>
-  <td height=23 class=xl65 width=149 style='height:17.0pt;width:112pt'>-h</td>
-  <td class=xl66 width=159 style='width:119pt'>打印帮助</td>
+ <tr>
+  <td>-h</td>
+  <td>打印帮助</td>
  </tr>
- <tr height=57 style='height:43.0pt'>
-  <td height=57 class=xl65 width=149 style='height:43.0pt;width:112pt'>-n</td>
-  <td class=xl66 width=159 style='width:119pt'>NameServer 服务地址，格式 ip:port</td>
+ <tr>
+  <td>-n</td>
+  <td>NameServer 服务地址，格式 ip:port</td>
  </tr>
- <tr height=23 style='height:17.0pt'>
-  <td rowspan=6 height=518 class=xl68 width=163 style='border-bottom:1.0pt;
-  height:380pt;border-top:none;width:122pt'>updateTopicPerm</td>
-  <td rowspan=6 class=xl70 width=135 style='border-bottom:1.0pt;
-  border-top:none;width:101pt'>更新 Topic 读写权限</td>
-  <td class=xl65 width=149 style='width:112pt'>-t</td>
-  <td class=xl66 width=159 style='width:119pt'>topic 名称</td>
+ <tr>
+  <td rowspan=6 style='border-bottom:1.0pt; border-top:none;'>updateTopicPerm</td>
+  <td rowspan=6 style='border-bottom:1.0pt;
+  border-top:none'>更新 Topic 读写权限</td>
+  <td>-t</td>
+  <td>topic 名称</td>
  </tr>
- <tr height=23 style='height:17.0pt'>
-  <td height=23 class=xl65 width=149 style='height:17.0pt;width:112pt'>-h</td>
-  <td class=xl66 width=159 style='width:119pt'>打印帮助</td>
+ <tr>
+  <td>-h</td>
+  <td>打印帮助</td>
  </tr>
- <tr height=57 style='height:43.0pt'>
-  <td height=57 class=xl65 width=149 style='height:43.0pt;width:112pt'>-n</td>
-  <td class=xl66 width=159 style='width:119pt'>NameServer 服务地址，格式 ip:port</td>
+ <tr>
+  <td>-n</td>
+  <td>NameServer 服务地址，格式 ip:port</td>
  </tr>
- <tr height=132 style='height:99.0pt'>
-  <td height=132 class=xl65 width=149 style='height:99.0pt;width:112pt'>-b</td>
-  <td class=xl66 width=159 style='width:119pt'>Broker 地址，表示 topic 所在
+ <tr>
+  <td>-b</td>
+  <td>Broker 地址，表示 topic 所在
   Broker，只支持单台Broker，地址为ip:port</td>
  </tr>
- <tr height=76 style='height:57.0pt'>
-  <td height=76 class=xl65 width=149 style='height:57.0pt;width:112pt'>-p</td>
-  <td class=xl66 width=159 style='width:119pt'>指定新 topic 的读写权限( W=2|R=4|WR=6 )</td>
+ <tr>
+  <td>-p</td>
+  <td>指定新 topic 的读写权限( W=2|R=4|WR=6 )</td>
  </tr>
- <tr height=207 style='height:155.0pt'>
-  <td height=207 class=xl65 width=149 style='height:155.0pt;width:112pt'>-c</td>
-  <td class=xl66 width=159 style='width:119pt'>cluster 名称，表示 topic 所在集群（集群可通过
+ <tr>
+  <td>-c</td>
+  <td>cluster 名称，表示 topic 所在集群（集群可通过
   clusterList 查询），-b优先，如果没有-b，则对集群中所有Broker执行命令</td>
  </tr>
- <tr height=23 style='height:17.0pt'>
-  <td rowspan=5 height=199 class=xl68 width=163 style='border-bottom:1.0pt;
-  height:149.0pt;border-top:none;width:122pt'>updateOrderConf</td>
-  <td rowspan=5 class=xl70 width=135 style='border-bottom:1.0pt;
-  border-top:none;width:101pt'>从NameServer上创建、删除、获取特定命名空间的kv配置，目前还未启用</td>
-  <td class=xl65 width=149 style='width:112pt'>-h</td>
-  <td class=xl66 width=159 style='width:119pt'>打印帮助</td>
+ <tr>
+  <td rowspan=5 style='border-bottom:1.0pt;
+ border-top:none;'>updateOrderConf</td>
+  <td rowspan=5 style='border-bottom:1.0pt;
+  border-top:none'>从NameServer上创建、删除、获取特定命名空间的kv配置，目前还未启用</td>
+  <td>-h</td>
+  <td>打印帮助</td>
  </tr>
- <tr height=57 style='height:43.0pt'>
-  <td height=57 class=xl65 width=149 style='height:43.0pt;width:112pt'>-n</td>
-  <td class=xl66 width=159 style='width:119pt'>NameServer 服务地址，格式 ip:port</td>
+ <tr>
+  <td>-n</td>
+  <td>NameServer 服务地址，格式 ip:port</td>
  </tr>
- <tr height=23 style='height:17.0pt'>
-  <td height=23 class=xl65 width=149 style='height:17.0pt;width:112pt'>-t</td>
-  <td class=xl66 width=159 style='width:119pt'>topic，键</td>
+ <tr>
+  <td>-t</td>
+  <td>topic，键</td>
  </tr>
- <tr height=39 style='height:29.0pt'>
-  <td height=39 class=xl65 width=149 style='height:29.0pt;width:112pt'>-v</td>
-  <td class=xl66 width=159 style='width:119pt'>orderConf，值</td>
+ <tr>
+  <td>-v</td>
+  <td>orderConf，值</td>
  </tr>
- <tr height=57 style='height:43.0pt'>
-  <td height=57 class=xl65 width=149 style='height:43.0pt;width:112pt'>-m</td>
-  <td class=xl66 width=159 style='width:119pt'>method，可选get、put、delete</td>
+ <tr>
+  <td>-m</td>
+  <td>method，可选get、put、delete</td>
  </tr>
- <tr height=23 style='height:17.0pt'>
-  <td rowspan=4 height=198 class=xl68 width=163 style='border-bottom:1.0pt;
-  height:140pt;border-top:none;width:122pt'>allocateMQ</td>
-  <td rowspan=4 class=xl70 width=135 style='border-bottom:1.0pt;
-  border-top:none;width:101pt'>以平均负载算法计算消费者列表负载消息队列的负载结果</td>
-  <td class=xl65 width=149 style='width:112pt'>-t</td>
-  <td class=xl66 width=159 style='width:119pt'>topic 名称</td>
+ <tr>
+  <td rowspan=4 style='border-bottom:1.0pt; border-top:none;'>allocateMQ</td>
+  <td rowspan=4 style='border-bottom:1.0pt;
+  border-top:none'>以平均负载算法计算消费者列表负载消息队列的负载结果</td>
+  <td>-t</td>
+  <td>topic 名称</td>
  </tr>
- <tr height=23 style='height:17.0pt'>
-  <td height=23 class=xl65 width=149 style='height:17.0pt;width:112pt'>-h</td>
-  <td class=xl66 width=159 style='width:119pt'>打印帮助</td>
+ <tr>
+  <td>-h</td>
+  <td>打印帮助</td>
  </tr>
- <tr height=57 style='height:43.0pt'>
-  <td height=57 class=xl65 width=149 style='height:43.0pt;width:112pt'>-n</td>
-  <td class=xl66 width=159 style='width:119pt'>NameServer 服务地址，格式 ip:port</td>
+ <tr>
+  <td>-n</td>
+  <td>NameServer 服务地址，格式 ip:port</td>
  </tr>
- <tr height=95 style='height:71.0pt'>
-  <td height=95 class=xl65 width=149 style='height:71.0pt;width:112pt'>-i</td>
-  <td class=xl66 width=159 style='width:119pt'>ipList，用逗号分隔，计算这些ip去负载Topic的消息队列</td>
+ <tr>
+  <td>-i</td>
+  <td>ipList，用逗号分隔，计算这些ip去负载Topic的消息队列</td>
  </tr>
- <tr height=23 style='height:17.0pt'>
-  <td rowspan=4 height=142 class=xl68 width=163 style='border-bottom:1.0pt solid black;
-  height:106.0pt;border-top:1.0pt;width:122pt'>statsAll</td>
-  <td rowspan=4 class=xl70 width=135 style='border-bottom:1.0pt;
-  border-top:none;width:101pt'>打印Topic订阅关系、TPS、积累量、24h读写总量等信息</td>
-  <td class=xl65 width=149 style='width:112pt'>-h</td>
-  <td class=xl66 width=159 style='width:119pt'>打印帮助</td>
+ <tr>
+  <td rowspan=4 style='border-bottom:1.0pt solid black;
+ border-top:1.0pt;'>statsAll</td>
+  <td rowspan=4 style='border-bottom:1.0pt;
+  border-top:none'>打印Topic订阅关系、TPS、积累量、24h读写总量等信息</td>
+  <td>-h</td>
+  <td>打印帮助</td>
  </tr>
- <tr height=57 style='height:43.0pt'>
-  <td height=57 class=xl65 width=149 style='height:43.0pt;width:112pt'>-n</td>
-  <td class=xl66 width=159 style='width:119pt'>NameServer 服务地址，格式 ip:port</td>
+ <tr>
+  <td>-n</td>
+  <td>NameServer 服务地址，格式 ip:port</td>
  </tr>
- <tr height=39 style='height:29.0pt'>
-  <td height=39 class=xl65 width=149 style='height:29.0pt;width:112pt'>-a</td>
-  <td class=xl66 width=159 style='width:119pt'>是否只打印活跃topic</td>
+ <tr>
+  <td>-a</td>
+  <td>是否只打印活跃topic</td>
  </tr>
- <tr height=23 style='height:17.0pt'>
-  <td height=23 class=xl65 width=149 style='height:17.0pt;width:112pt'>-t</td>
-  <td class=xl66 width=159 style='width:119pt'>指定topic</td>
+ <tr>
+  <td>-t</td>
+  <td>指定topic</td>
  </tr>
 </table>
 
-####2）集群相关
+#### 2）集群相关
 
 <table border=0 cellpadding=0 cellspacing=0 width=714>
  <col width=177>
@@ -1025,7 +1008,7 @@ tail -500f ~/logs/rocketmqlogs/broker.log
  </tr>
 </table>
 
-####3）Broker相关
+#### 3）Broker相关
 
 <table border=0 cellpadding=0 cellspacing=0 width=714>
  <col width=177>
@@ -1206,7 +1189,7 @@ tail -500f ~/logs/rocketmqlogs/broker.log
  </tr>
 </table>
 
-####4）消息相关
+#### 4）消息相关
 
 <table border=0 cellpadding=0 cellspacing=0 width=714>
  <col width=177>
@@ -2571,7 +2554,7 @@ consumer.start();
 
 ## 4.6 事务消息
 
-###4.6.1 流程分析
+### 4.6.1 流程分析
 
 ![](img/事务消息.png)
 
@@ -2579,7 +2562,7 @@ consumer.start();
 
 上图说明了事务消息的大致方案，其中分为两个流程：正常事务消息的发送及提交、事务消息的补偿流程。
 
-####1）事务消息发送及提交
+#### 1）事务消息发送及提交
 
 (1) 发送消息（half消息）。
 
@@ -2607,7 +2590,7 @@ consumer.start();
 * TransactionStatus.RollbackTransaction: 回滚事务，它代表该消息将被删除，不允许被消费。
 * TransactionStatus.Unknown: 中间状态，它代表需要检查消息队列来确定状态。
 
-###4.6.1 发送事务消息
+### 4.6.2 发送事务消息
 
 #### 1) 创建事务性生产者
 
@@ -2659,7 +2642,6 @@ public class TransactionListenerImpl implements TransactionListener {
         } else {
             return LocalTransactionState.UNKNOW;
         }
-
     }
 
     @Override
@@ -2670,7 +2652,7 @@ public class TransactionListenerImpl implements TransactionListener {
 }
 ```
 
-### 4.6.2 使用限制
+### 4.6.3 使用限制
 
 1. 事务消息不支持延时消息和批量消息。
 2. 为了避免单个消息被检查太多次而导致半队列消息累积，我们默认将单个消息的检查次数限制为 15 次，但是用户可以通过 Broker 配置文件的 `transactionCheckMax`参数来修改此限制。如果已经检查某条消息超过 N 次的话（ N = `transactionCheckMax` ） 则 Broker 将丢弃此消息，并在默认情况下同时打印错误日志。用户可以通过重写 `AbstractTransactionCheckListener` 类来修改这个行为。

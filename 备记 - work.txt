@@ -37,6 +37,8 @@ Windows 7 右键的一些配置
 		nodepad++ 配置字体大小、背景颜色
 		eclipse
 		vs code
+		Typora	md编辑器
+			文件》偏好设置》外观》主题》打开主题文件夹》新增 github.css 的 body 节点： background-color: rgb(197, 224, 179);
 	中间件
 		maven	D:\application\apache-maven-repository\
 			maven settings.xml
