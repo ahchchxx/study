@@ -2131,6 +2131,14 @@ public static void main(String[] args) throws Exception {
 
 下面用订单进行分区有序的示例。一个订单的顺序流程是：创建、付款、推送、完成。订单号相同的消息会被先后发送到同一个队列中，消费时，同一个OrderId获取到的肯定是同一个队列。
 
+● 拆分在不同队列里
+
+![](img/order_quene1.png)
+
+● 通过队列选择器，指定特定类型的消息只通过某个队列转发
+
+![](img/order_quene2.png)
+
 ### 4.2.1 顺序消息生产
 
 ```java

@@ -362,7 +362,7 @@ public class ProviderBootstrap {
 
 ```java
 @Component
-@Service(interfaceClass = IUserService.class)
+@Service(interfaceClass = IUserService.class) // ▲ 这个是 Dubbo 的注解
 public class UserServiceImpl implements IUserService{
     @Override
     public String sayHello(String name) {
@@ -475,7 +475,7 @@ public class ConsumerBootstrap {
 @RequestMapping("/user")
 public class UserController {
 
-    @Reference
+    @Reference // ▲ 这个是 Dubbo 提供的注解
     private IUserService userService;
 
     @RequestMapping("/sayHello")
@@ -620,10 +620,10 @@ shop系统基于Maven进行项目管理
 - 支付服务：shop-pay-service
 - 商品服务：shop-goods-service
 - 用户服务：shop-user-service
-- 实体类：shop-pojo
 - 持久层：shop-dao
 - 接口层：shop-api
-- 工具工程：shop-common
+- 实体类：*shop-pojo*
+- 工具工程：*shop-common*
 
 共12个系统
 
@@ -1587,9 +1587,7 @@ executorService.submit(new Runnable() {
 
 
 
-### 5.2.3 
-
-### 处理消息
+### 5.2.3 处理消息
 
 支付成功后，支付服务payService发送MQ消息，订单服务、用户服务、日志服务需要订阅消息进行处理
 
