@@ -1169,7 +1169,6 @@ public class CancelOrderConsumer implements RocketMQListener<MessageExt>{
 @RocketMQMessageListener(topic = "${mq.order.topic}",consumerGroup = "${mq.order.consumer.group.name}",messageModel = MessageModel.BROADCASTING )
 public class CancelMQListener implements RocketMQListener<MessageExt>{
 
-
     @Value("${mq.order.consumer.group.name}")
     private String groupName;
 
