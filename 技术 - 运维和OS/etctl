@@ -1,0 +1,50 @@
+# put this file in /usr/local/bin
+# Ubuntu 18 中 shell 命令有修改
+#	case '$1' in
+#	case $1 in
+
+#!/bin/sh
+#
+#rm start up
+if [ ! $2 ]
+	then
+        docker exec -it $1 bash
+else
+case $1 in
+exec )
+	docker exec -it $2 bash
+	;;
+log )
+	docker logs -f --tail 100 $2 
+	;;
+01 )
+	echo  
+	echo  
+	cat /opt/$1/script/01.sh | grep ^'git pull'
+	echo  
+	echo  
+	sleep 1
+	sh /opt/$1/script/01.sh
+	;;
+02 )
+	sh /opt/$1/script/02.sh
+	;;
+03 )
+	$0 $1 01
+	echo 
+	echo 
+	sleep 2
+	echo 
+	echo 
+		$0 $1 02
+	echo 
+	echo 
+	sleep 1
+	$0 $1 restart
+	;;
+* )
+	echo "exec / log ; etctl containerName"
+	#echo "log/up/restart/stop/rm/start/config"
+	;;
+esac
+fi
