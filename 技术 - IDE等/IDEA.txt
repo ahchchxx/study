@@ -53,7 +53,13 @@ https://blog.csdn.net/daisy_zhangy/article/details/89873972
 
 【忽视一些文件】
 点击file->Settings->File types,在右下角的Ignore files and folders中，追加
-	.idea
+	.idea/
 	*.iml，即可隐藏iml文件
 
+
+【一些教程】
+我收藏的 IntelliJ IDEA 使用教程(2019图文版)
+	https://mp.weixin.qq.com/s/1q-PZYKvjkPFpn6Id_SnRQ
+IntelliJ IDEA 新手使用基本手册。
+	https://mp.weixin.qq.com/s/N-OjALlqMMTWawtOlj4ySg
 
