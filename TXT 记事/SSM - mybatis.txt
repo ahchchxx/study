@@ -1,3 +1,9 @@
+
+▲ xml里的sql 语句和mapper是通过接口里方法的全路径名称进行绑定的。
+也可以通过@Select之类的注解进行绑定。
+mapper 接口里的方法是没有实现的，而是通过 proxy 进行拦截了，调用该方法时会执行 mybatis 框架提供的拦截方法。
+
+
 XML文件，包含各种sql语句
 	1，模糊查询  like '%'| #{condition.iataCode} |'%'
 
