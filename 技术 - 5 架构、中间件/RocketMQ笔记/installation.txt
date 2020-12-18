@@ -1,0 +1,36 @@
+
+拉取 docker 镜像
+	docker pull rocketmqinc/rocketmq:4.4.0
+	docker pull pangliang/rocketmq-console-ng
+
+【1，name-server】
+docker run -d -p 9876:9876 -v {RmHome}/data/namesrv/logs:/root/logs -v {RmHome}/data/namesrv/store:/root/store --name rmqnamesrv -e "MAX_POSSIBLE_HEAP=100000000" rocketmqinc/rocketmq:4.4.0 sh mqnamesrv
+
+docker run -d -p 9876:9876 -v /mnt/rocketmq/data/namesrv/logs:/root/logs -v /mnt/rocketmq/data/namesrv/store:/root/store --name rmqnamesrv -e "MAX_POSSIBLE_HEAP=100000000" rocketmqinc/rocketmq:4.4.0 sh mqnamesrv
+
+
+【配置】/mnt/rocketmq/conf/broker.conf
+brokerClusterName = DefaultCluster
+brokerName = broker-a
+brokerId = 0
+deleteWhen = 04
+fileReservedTime = 48
+brokerRole = ASYNC_MASTER
+flushDiskType = ASYNC_FLUSH
+brokerIP1 = 192.168.118.131
+
+【2，broker】
+docker run -d -p 10911:10911 -p 10909:10909 -v  {RmHome}/data/broker/logs:/root/logs -v  {RmHome}/rocketmq/data/broker/store:/root/store -v  {RmHome}/conf/broker.conf:/opt/rocketmq-4.4.0/conf/broker.conf --name rmqbroker --link rmqnamesrv:namesrv -e "NAMESRV_ADDR=namesrv:9876" -e "MAX_POSSIBLE_HEAP=200000000" rocketmqinc/rocketmq:4.4.0 sh mqbroker -c /opt/rocketmq-4.4.0/conf/broker.conf
+
+docker run -d -p 10911:10911 -v  /mnt/rocketmq/data/broker/logs:/root/logs -v  /mnt/rocketmq/rocketmq/data/broker/store:/root/store -v  /mnt/rocketmq/conf/broker.conf:/opt/rocketmq-4.4.0/conf/broker.conf --name rmqbroker --link rmqnamesrv:namesrv -e "NAMESRV_ADDR=namesrv:9876" -e "MAX_POSSIBLE_HEAP=200000000" rocketmqinc/rocketmq:4.4.0 sh mqbroker -c /opt/rocketmq-4.4.0/conf/broker.conf
+
+
+【3，安装 rocketmq 控制台】
+docker run -e "JAVA_OPTS=-Drocketmq.namesrv.addr={本地外网 IP}:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false" -p 8080:8080 -t pangliang/rocketmq-console-ng
+
+docker run -di -e "JAVA_OPTS=-Drocketmq.namesrv.addr=192.168.118.131:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false" --name=rocketmq-console -p 9888:8080 -t pangliang/rocketmq-console-ng
+
+
+具体使用案例请看 demo 里的 mq 工程
+
+
