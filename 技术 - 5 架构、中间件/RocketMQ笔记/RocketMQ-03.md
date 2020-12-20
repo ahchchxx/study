@@ -62,7 +62,7 @@ RocketMQ充分利用了上述特性，也就是所谓的**“零拷贝”技术*
 
 ### 1.1.4 消息存储结构
 
-RocketMQ消息的存储是由ConsumeQueue和CommitLog配合完成 的，消息真正的物理存储文件是CommitLog，ConsumeQueue是消息的逻辑队列，类似数据库的索引文件，存储的是指向物理存储的地址。每 个Topic下的每个Message Queue都有一个对应的ConsumeQueue文件。
+RocketMQ消息的存储是由ConsumeQueue和CommitLog配合完成的，消息真正的物理存储文件是CommitLog，ConsumeQueue是消息的逻辑队列，类似数据库的索引文件，存储的是指向物理存储的地址。每 个Topic下的每个Message Queue都有一个对应的ConsumeQueue文件。
 
 ![](img/消息存储结构.png)
 
@@ -100,7 +100,7 @@ Master和Slave的区别：在Broker的配置文件中，参数 brokerId的值为
 
 ### 1.2.1 消息消费高可用
 
-在Consumer的配置文件中，并不需要设置是从Master读还是从Slave 读，当Master不可用或者繁忙的时候，Consumer会被自动切换到从Slave 读。有了自动切换Consumer这种机制，当一个Master角色的机器出现故障后，Consumer仍然可以从Slave读取消息，不影响Consumer程序。这就达到了消费端的高可用性。
+在Consumer的配置文件中，并不需要设置是从Master读还是从Slave 读，当Master不可用或者繁忙的时候，Consumer会被自动切换到从Slave 读。有了**自动切换机制**，当一个Master角色的机器出现故障后，Consumer仍然可以从Slave读取消息，不影响Consumer程序。这就达到了消费端的高可用性。
 
 ### 1.2.2 消息发送高可用
 
@@ -130,9 +130,9 @@ Master和Slave的区别：在Broker的配置文件中，参数 brokerId的值为
 
 #### 4）总结
 
-![](img/复制刷盘.png)
+<img src="img/复制刷盘.png" style="zoom:50%;" />
 
-实际应用中要结合业务场景，合理设置刷盘方式和主从复制方式， 尤其是SYNC_FLUSH方式，由于频繁地触发磁盘写动作，会明显降低 性能。通常情况下，应该把 **Master和Save配置成ASYNC_FLUSH的刷盘方式，主从之间配置成SYNC_MASTER的复制方式**，这样即使有一台机器出故障，仍然能保证数据不丢，是个不错的选择。
+实际应用中要结合业务场景，合理设置刷盘方式和主从复制方式， 尤其是SYNC_FLUSH方式，由于频繁地触发磁盘写动作，会明显降低性能。通常情况下，应该把 **Master和Slave配置成：ASYNC_FLUSH的刷盘方式，SYNC_MASTER的复制方式**，这样即使有一台机器出故障，仍然能保证数据不丢，是个不错的选择。
 
 ## 1.3 负载均衡
 
@@ -2274,10 +2274,10 @@ handleHA(result, putMessageResult, msg);
 
 ![](./img/存储文件.png)
 
-- commitLog：消息存储目录
+- commitLog：消息存储目录，每个 1G
 - config：运行期间一些配置信息
-- consumerqueue：消息消费队列存储目录
-- index：消息索引文件存储目录
+- consumerqueue：消息消费队列存储目录，按topic建子文件夹，里面每个文件 5.72M
+- index：消息索引文件存储目录，每个 400M
 - abort：如果存在改文件寿命Broker非正常关闭
 - checkpoint：文件检查点，存储CommitLog文件最后一次刷盘时间戳、consumerquueue最后一次刷盘时间，index索引文件最后一次刷盘时间戳。
 
@@ -2435,7 +2435,7 @@ boolean firstCreateInQueue = false;	//是否是MappedFileQueue队列中第一个
 
 ***MappedFile初始化***
 
-* 未开启`transientStorePoolEnable`。`transientStorePoolEnable=true`为`true`表示数据先存储到堆外内存，然后通过`Commit`线程将数据提交到内存映射Buffer中，再通过`Flush`线程将内存映射`Buffer`中数据持久化磁盘。
+* 未开启`transientStorePoolEnable`。`transientStorePoolEnable=true`表示数据先存储到**堆外内存**，然后通过`Commit`线程将数据提交到**内存映射Buffer**中，再通过`Flush`线程将内存映射`Buffer`中数据持久化磁盘。
 
 ```java
 private void init(final String fileName, final int fileSize) throws IOException {
@@ -2467,7 +2467,8 @@ private void init(final String fileName, final int fileSize) throws IOException 
 }
 ```
 
-开启`transientStorePoolEnable`
+- 开启`transientStorePoolEnable`
+
 
 ```java
 public void init(final String fileName, final int fileSize,
@@ -2566,7 +2567,11 @@ protected void commit0(final int commitLeastPages) {
 
 ***MappedFile#flush***
 
-刷写磁盘，直接调用MappedByteBuffer或fileChannel的force方法将内存中的数据持久化到磁盘，那么flushedPosition应该等于MappedByteBuffer中的写指针；如果writeBuffer不为空，则flushPosition应该等于上一次的commit指针；因为上一次提交的数据就是进入到MappedByteBuffer中的数据；如果writeBuffer为空，数据时直接进入到MappedByteBuffer，wrotePosition代表的是MappedByteBuffer中的指针，故设置flushPosition为wrotePosition。
+刷写磁盘，直接调用MappedByteBuffer或fileChannel的force方法将内存中的数据持久化到磁盘，那么flushedPosition应该等于MappedByteBuffer中的写指针；
+
+如果writeBuffer不为空，则flushedPosition应该等于上一次的commit指针；因为上一次提交的数据就是进入到MappedByteBuffer中的数据；
+
+如果writeBuffer为空，数据时直接进入到MappedByteBuffer，wrotePosition代表的是MappedByteBuffer中的指针，故设置flushPosition为wrotePosition。
 
 ![](img/flush.jpg)
 
@@ -3332,17 +3337,21 @@ private void doCommit() {
 
 #### 异步刷盘
 
-在消息追加到内存后，立即返回给消息发送端。如果开启transientStorePoolEnable，RocketMQ会单独申请一个与目标物理文件（commitLog）同样大小的堆外内存，该堆外内存将使用内存锁定，确保不会被置换到虚拟内存中去，消息首先追加到堆外内存，然后提交到物理文件的内存映射中，然后刷写到磁盘。如果未开启transientStorePoolEnable，消息直接追加到物理文件直接映射文件中，然后刷写到磁盘中。
+在消息追加到内存后，立即返回给消息发送端。
+
+如果开启transientStorePoolEnable，RocketMQ会单独`申请一个与目标物理文件（commitLog）同样大小的堆外内存`，该堆外内存将使用内存锁定，确保不会被置换到虚拟内存中去，消息首先追加到堆外内存，然后提交到物理文件的内存映射中，然后刷写到磁盘。
+
+如果未开启transientStorePoolEnable，消息直接追加到物理文件直接映射文件中，然后刷写到磁盘中。
 
 ![](img/异步刷盘流程.png)
 
 开启transientStorePoolEnable后异步刷盘步骤:
 
 1. 将消息直接追加到ByteBuffer（堆外内存）
-2. CommitRealTimeService线程每隔200ms将ByteBuffer新追加内容提交到MappedByteBuffer中
+2. **CommitRealTimeService**线程，每隔**200ms**将ByteBuffer新追加内容提交到MappedByteBuffer中
 3. MappedByteBuffer在内存中追加提交的内容，wrotePosition指针向后移动
 4. commit操作成功返回，将committedPosition位置恢复
-5. FlushRealTimeService线程默认每500ms将MappedByteBuffer中新追加的内存刷写到磁盘
+5. **FlushRealTimeService**线程，默认每**500ms**将MappedByteBuffer中新追加的内存刷写到磁盘
 
 ***代码：CommitLog$CommitRealTimeService#run***
 
@@ -3424,7 +3433,9 @@ CommitLog.this.defaultMessageStore.getStoreCheckpoint().setPhysicMsgTimestamp(st
 
 ### 2.4.8 过期文件删除机制
 
-由于RocketMQ操作CommitLog、ConsumerQueue文件是基于内存映射机制并在启动的时候回加载CommitLog、ConsumerQueue目录下的所有文件，为了避免内存与磁盘的浪费，不可能将消息永久存储在消息服务器上，所以要引入一种机制来删除已过期的文件。RocketMQ顺序写CommitLog、ConsumerQueue文件，所有写操作全部落在最后一个CommitLog或者ConsumerQueue文件上，之前的文件在下一个文件创建后将不会再被更新。RocketMQ清除过期文件的方法时：如果当前文件在在一定时间间隔内没有再次被消费，则认为是过期文件，可以被删除，RocketMQ不会关注这个文件上的消息是否全部被消费。默认每个文件的过期时间为72小时，通过在Broker配置文件中设置fileReservedTime来改变过期时间，单位为小时。
+由于RocketMQ操作CommitLog、ConsumerQueue文件是基于**内存映射机制**，并在启动的时候回加载CommitLog、ConsumerQueue目录下的所有文件，为了避免内存与磁盘的浪费，不可能将消息永久存储在消息服务器上，所以要引入一种机制来删除已过期的文件。RocketMQ顺序写CommitLog、ConsumerQueue文件，所有写操作全部落在最后一个CommitLog或者ConsumerQueue文件上，之前的文件在下一个文件创建后将不会再被更新。
+
+RocketMQ清除过期文件的方法时：如果当前文件在一定时间间隔内没有再次被消费，则认为是过期文件，可以被删除，RocketMQ不会关注这个文件上的消息是否全部被消费。默认每个文件的过期时间为72小时，通过在Broker配置文件中设置fileReservedTime来改变过期时间，单位为小时。
 
 ***代码：DefaultMessageStore#addScheduleTask***
 
@@ -3558,19 +3569,19 @@ for (int i = 0; i < mfsLength; i++) {
 
 ### 2.4.9 小结
 
-RocketMQ的存储文件包括消息文件（Commitlog）、消息消费队列文件（ConsumerQueue）、Hash索引文件（IndexFile）、监测点文件（checkPoint）、abort（关闭异常文件）。单个消息存储文件、消息消费队列文件、Hash索引文件长度固定以便使用内存映射机制进行文件的读写操作。RocketMQ组织文件以文件的起始偏移量来命令文件，这样根据偏移量能快速定位到真实的物理文件。RocketMQ基于内存映射文件机制提供了同步刷盘和异步刷盘两种机制，异步刷盘是指在消息存储时先追加到内存映射文件，然后启动专门的刷盘线程定时将内存中的文件数据刷写到磁盘。
+RocketMQ的存储文件包括消息文件（Commitlog）、消息消费队列文件（ConsumerQueue）、Hash索引文件（IndexFile）、监测点文件（checkPoint）、abort（关闭异常文件）。单个消息存储文件、消息消费队列文件、Hash索引文件长度固定以便使用内存映射机制进行文件的读写操作。RocketMQ组织文件以文件的**起始偏移量**来命令文件，这样根据偏移量能快速定位到真实的物理文件。RocketMQ基于**内存映射文件机制**提供了同步刷盘和异步刷盘两种机制，异步刷盘是指在消息存储时先追加到内存映射文件，然后启动专门的刷盘线程定时将内存中的文件数据刷写到磁盘。
 
-CommitLog，消息存储文件，RocketMQ为了保证消息发送的高吞吐量，采用单一文件存储所有主题消息，保证消息存储是完全的顺序写，但这样给文件读取带来了不便，为此RocketMQ为了方便消息消费构建了消息消费队列文件，基于主题与队列进行组织，同时RocketMQ为消息实现了Hash索引，可以为消息设置索引键，根据所以能够快速从CommitLog文件中检索消息。
+CommitLog，消息存储文件，RocketMQ为了保证消息发送的高吞吐量，采用单一文件存储所有主题消息，保证消息存储是完全的顺序写，但这样给文件读取带来了不便，为此RocketMQ为了方便消息消费构建了**ConsumerQueue**，基于主题与队列进行组织，同时RocketMQ为消息实现了Hash索引，可以为消息设置索引键，根据所以能够快速从CommitLog文件中检索消息。
 
 当消息达到CommitLog后，会通过ReputMessageService线程接近实时地将消息转发给消息消费队列文件与索引文件。为了安全起见，RocketMQ引入abort文件，记录Broker的停机是否是正常关闭还是异常关闭，在重启Broker时为了保证CommitLog文件，消息消费队列文件与Hash索引文件的正确性，分别采用不同策略来恢复文件。
 
-RocketMQ不会永久存储消息文件、消息消费队列文件，而是启动文件过期机制并在磁盘空间不足或者默认凌晨4点删除过期文件，文件保存72小时并且在删除文件时并不会判断该消息文件上的消息是否被消费。
+RocketMQ不会永久存储消息文件、消息消费队列文件，而是启动文件过期机制，并在磁盘空间不足，或者默认凌晨4点删除过期文件。文件保存72小时，并且在删除文件时，并不会判断该消息文件上的消息是否被消费。
 
 ## 2.5 Consumer
 
 ### 2.5.1 消息消费概述
 
-消息消费以组的模式开展，一个消费组内可以包含多个消费者，每一个消费者组可订阅多个主题，消费组之间有ff式和广播模式两种消费模式。集群模式，主题下的同一条消息只允许被其中一个消费者消费。广播模式，主题下的同一条消息，将被集群内的所有消费者消费一次。消息服务器与消费者之间的消息传递也有两种模式：推模式、拉模式。所谓的拉模式，是消费端主动拉起拉消息请求，而推模式是消息达到消息服务器后，推送给消息消费者。RocketMQ消息推模式的实现基于拉模式，在拉模式上包装一层，一个拉取任务完成后开始下一个拉取任务。
+消息消费以组的模式开展，一个消费组内可以包含多个消费者，每一个消费者组可订阅多个主题，消费组之间有集群式和广播模式两种消费模式。**集群模式**，主题下的同一条消息只允许被其中一个消费者消费。**广播模式**，主题下的同一条消息，将被集群内的所有消费者消费一次。消息服务器与消费者之间的消息传递也有两种模式：推模式、拉模式。所谓的拉模式，是消费端主动拉起拉消息请求，而推模式是消息达到消息服务器后，推送给消息消费者。RocketMQ消息推模式的实现基于拉模式，在拉模式上包装一层，一个拉取任务完成后开始下一个拉取任务。
 
 集群模式下，多个消费者如何对消息队列进行负载呢？消息队列负载机制遵循一个通用思想：一个消息队列同一个时间只允许被一个消费者消费，一个消费者可以消费多个消息队列。
 
@@ -3841,7 +3852,7 @@ public List<MessageExt> takeMessags(final int batchSize)
 
 #### 3）消息拉取基本流程
 
-#####1.客户端发起拉取请求
+##### 1.客户端发起拉取请求
 
 ![](img/消息拉取基本流程.png)
 
@@ -3921,7 +3932,7 @@ public void pullMessage(final PullRequest pullRequest) {
 }
 ```
 
-#####2.消息服务端Broker组装消息
+##### 2.消息服务端Broker组装消息
 
 ![](img/消息服务端Broker组装消息.png)
 
@@ -4069,7 +4080,7 @@ if (storeOffsetEnable) {
 }
 ```
 
-#####3.消息拉取客户端处理消息
+##### 3.消息拉取客户端处理消息
 
 ![](img/消息拉取客户端处理消息.png)
 
@@ -4144,7 +4155,9 @@ if (DefaultMQPushConsumerImpl.this.defaultMQPushConsumer.getPullInterval() > 0) 
 
 #### 4）消息拉取长轮询机制分析
 
-RocketMQ未真正实现消息推模式，而是消费者主动向消息服务器拉取消息，RocketMQ推模式是循环向消息服务端发起消息拉取请求，如果消息消费者向RocketMQ拉取消息时，消息未到达消费队列时，如果不启用长轮询机制，则会在服务端等待shortPollingTimeMills时间后（挂起）再去判断消息是否已经到达指定消息队列，如果消息仍未到达则提示拉取消息客户端PULL—NOT—FOUND（消息不存在）；如果开启长轮询模式，RocketMQ一方面会每隔5s轮询检查一次消息是否可达，同时一有消息达到后立马通知挂起线程再次验证消息是否是自己感兴趣的消息，如果是则从CommitLog文件中提取消息返回给消息拉取客户端，否则直到挂起超时，超时时间由消息拉取方在消息拉取是封装在请求参数中，PUSH模式为15s，PULL模式通过DefaultMQPullConsumer#setBrokerSuspendMaxTimeMillis设置。RocketMQ通过在Broker客户端配置longPollingEnable为true来开启长轮询模式。
+RocketMQ未真正实现消息推模式，而是消费者主动向消息服务器拉取消息，RocketMQ推模式是循环向消息服务端发起消息拉取请求，如果消息消费者向RocketMQ拉取消息时，消息未到达消费队列时，如果不启用长轮询机制，则会在服务端等待shortPollingTimeMills时间后（挂起），再去判断消息是否已经到达指定消息队列，如果消息仍未到达则提示拉取消息客户端PULL—NOT—FOUND（消息不存在）；
+
+如果开启长轮询模式，RocketMQ一方面会每隔5s轮询检查一次消息是否可达，同时一有消息达到后立马通知挂起线程再次验证消息是否是自己感兴趣的消息，如果是则从CommitLog文件中提取消息返回给消息拉取客户端，否则直到挂起超时，超时时间由消息拉取方在消息拉取是封装在请求参数中，PUSH模式为15s，PULL模式通过DefaultMQPullConsumer#setBrokerSuspendMaxTimeMillis设置。RocketMQ通过在Broker客户端配置longPollingEnable为true来开启长轮询模式。
 
 ***代码：PullMessageProcessor#processRequest***
 
@@ -4425,7 +4438,7 @@ if (mqSet != null && cidAll != null) {
     }
 ```
 
-RocketMQ默认提供5中负载均衡分配算法
+RocketMQ默认提供5种负载均衡分配算法
 
 ```java
 AllocateMessageQueueAveragely:平均分配
@@ -4434,6 +4447,7 @@ AllocateMessageQueueAveragely:平均分配
 c1:q1,q2,q3
 c2:q4,q5,a6
 c3:q7,q8
+
 AllocateMessageQueueAveragelyByCircle:平均轮询分配
 举例:8个队列q1,q2,q3,q4,q5,a6,q7,q8,消费者3个:c1,c2,c3
 分配如下:
@@ -4671,12 +4685,12 @@ synchronized (objLock) {
 
 RocketMQ消息消费方式分别为集群模式、广播模式。
 
-消息队列负载由RebalanceService线程默认每隔20s进行一次消息队列负载，根据当前消费者组内消费者个数与主题队列数量按照某一种负载算法进行队列分配，分配原则为同一个消费者可以分配多个消息消费队列，同一个消息消费队列同一个时间只会分配给一个消费者。
+消息队列负载由RebalanceService线程默认每隔20s进行一次消息队列负载，根据当前消费者组内消费者个数与主题队列数量，按照某一种负载算法进行队列分配，分配原则为同一个消费者可以分配多个消息消费队列，同一个消息消费队列同一个时间只会分配给一个消费者。
 
 消息拉取由PullMessageService线程根据RebalanceService线程创建的拉取任务进行拉取，默认每次拉取32条消息，提交给消费者消费线程后继续下一次消息拉取。如果消息消费过慢产生消息堆积，会触发消息消费拉取流控。 
 
-**并发消息消费**，指消费线程池中的线程可以并发对同一个消息队列的消息进行消费，消费成功后，取出消息队列中最小的消息偏移量作为消息消费进度偏移量存储在于消息消费进度存储文件中，集群模式消息消费进度存储在Broker（消息服务器），广播模式消息消费进度存储在消费者端。
+**并发消息消费**，指消费线程池中的线程可以并发对同一个消息队列的消息进行消费，消费成功后，取出消息队列中最小的消息偏移量，作为消息消费进度偏移量，存储在于消息消费进度存储文件中。集群模式消息消费进度存储在Broker（消息服务器），广播模式消息消费进度存储在消费者端。
 
 RocketMQ不支持任意精度的定时调度消息，只支持自定义的消息延迟级别，例如1s、2s、5s等，可通过在broker配置文件中设置messageDelayLevel。
 
-**顺序消息**一般使用集群模式，是指对消息消费者内的线程池中的线程对消息消费队列只能串行消费。并并发消息消费最本质的区别是消息消费时必须成功锁定消息消费队列，在Broker端会存储消息消费队列的锁占用情况。
+**顺序消息**一般使用集群模式，是指对消息消费者内的线程池中的线程对消息消费队列只能串行消费。并发消息消费最本质的区别是，消息消费时必须成功锁定消息消费队列，在Broker端会存储消息消费队列的锁占用情况。

@@ -170,7 +170,7 @@ sh bin/mqshutdown broker
 
 # 3. RocketMQ集群搭建
 
-## 3.1 各角色介绍
+## 3.1 ★各角色介绍
 
 * Producer：消息的发送者；举例：发信者
 
@@ -187,6 +187,10 @@ sh bin/mqshutdown broker
 * Message Queue：相当于是Topic的分区；用于并行发送和接收消息
 
 ![](img/RocketMQ角色.jpg)
+
+- **Core Concept**
+
+![](img/rmq-model.png)
 
 ## 3.2 集群搭建方式
 
