@@ -1,6 +1,6 @@
 # 1. MQ介绍
 
-##1.1 为什么要用MQ
+## 1.1 为什么要用MQ
 
 消息队列是一种“先进先出”的数据结构
 
@@ -173,10 +173,17 @@ sh bin/mqshutdown broker
 ## 3.1 各角色介绍
 
 * Producer：消息的发送者；举例：发信者
+
 * Consumer：消息接收者；举例：收信者
+
 * Broker：暂存和传输消息；举例：邮局
+
 * NameServer：管理Broker；举例：各个邮局的管理机构
-* Topic：区分消息的种类；一个发送者可以发送消息给一个或者多个Topic；一个消息的接收者可以订阅一个或者多个Topic消息
+
+* Topic：区分消息的种类；一个发送者可以发送消息给一个或者多个Topic；一个消息的接收者可以订阅一个或者多个Topic消息。
+
+  > 可以通过topic、msgID、tag、key 、自定义属性等，来区分消息。可以通过tag、属性条件来过滤消息。
+
 * Message Queue：相当于是Topic的分区；用于并行发送和接收消息
 
 ![](img/RocketMQ角色.jpg)

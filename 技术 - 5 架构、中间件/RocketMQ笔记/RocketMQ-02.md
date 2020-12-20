@@ -366,7 +366,7 @@ public class ProviderBootstrap {
 public class UserServiceImpl implements IUserService{
     @Override
     public String sayHello(String name) {
-        return "hello:"+name;
+        return "hello:" + name;
     }
 }
 ```
@@ -453,7 +453,7 @@ public class UserServiceImpl implements IUserService{
 spring.application.name=dubbo-demo-consumer
 spring.dubbo.application.name=dubbo-demo-consumer
 spring.dubbo.application.id=dubbo-demo-consumer
-    spring.dubbo.registry.address=zookeeper://192.168.25.140:2181;zookeeper://192.168.25.140:2182;zookeeper://192.168.25.140:2183
+spring.dubbo.registry.address=zookeeper://192.168.25.140:2181;zookeeper://192.168.25.140:2182;zookeeper://192.168.25.140:2183
 ```
 
 #### 3）启动类
@@ -940,7 +940,7 @@ private void reduceMoneyPaid(TradeOrder order) {
 }
 ```
 
-* 用户服务UserService,更新余额
+* 用户服务UserService，更新余额
 
 ![](img/更改用户余额.png)
 
@@ -1102,8 +1102,8 @@ public Result confirmOrder(TradeOrder order) {
                         cancelTag, 
                         cancelOrderMQ.getOrderId().toString(), 
                     JSON.toJSONString(cancelOrderMQ));
-    } catch (Exception e1) {
-        e1.printStackTrace();
+    	} catch (Exception e1) {
+        	e1.printStackTrace();
             CastException.cast(ShopCode.SHOP_MQ_SEND_MESSAGE_FAIL);
         }
         return new Result(ShopCode.SHOP_FAIL.getSuccess(), ShopCode.SHOP_FAIL.getMessage());
@@ -1311,13 +1311,11 @@ public class CancelMQListener implements RocketMQListener<MessageExt>{
 @RocketMQMessageListener(topic = "${mq.order.topic}",consumerGroup = "${mq.order.consumer.group.name}",messageModel = MessageModel.BROADCASTING )
 public class CancelMQListener implements RocketMQListener<MessageExt>{
 
-
     @Autowired
     private TradeCouponMapper couponMapper;
 
     @Override
     public void onMessage(MessageExt message) {
-
         try {
             //1. 解析消息内容
             String body = new String(message.getBody(), "UTF-8");
@@ -1348,13 +1346,11 @@ public class CancelMQListener implements RocketMQListener<MessageExt>{
 @RocketMQMessageListener(topic = "${mq.order.topic}",consumerGroup = "${mq.order.consumer.group.name}",messageModel = MessageModel.BROADCASTING )
 public class CancelMQListener implements RocketMQListener<MessageExt>{
 
-
     @Autowired
     private IUserService userService;
 
     @Override
     public void onMessage(MessageExt messageExt) {
-
         try {
             //1.解析消息
             String body = new String(messageExt.getBody(), "UTF-8");
@@ -1383,19 +1379,19 @@ public class CancelMQListener implements RocketMQListener<MessageExt>{
 
 ```java
 @Override
-    public void onMessage(MessageExt messageExt) {
-        String body = new String(messageExt.getBody(), "UTF-8");
-        String msgId = messageExt.getMsgId();
-        String tags = messageExt.getTags();
-        String keys = messageExt.getKeys();
-        log.info("CancelOrderProcessor receive message:"+messageExt);
-        CancelOrderMQ cancelOrderMQ = JSON.parseObject(body, CancelOrderMQ.class);
-        TradeOrder order = orderService.findOne(cancelOrderMQ.getOrderId());
-		order.setOrderStatus(ShopCode.SHOP_ORDER_CANCEL.getCode());
-        orderService.changeOrderStatus(order);
-        log.info("订单:["+order.getOrderId()+"]状态设置为取消");
-        return order;
-    }
+public void onMessage(MessageExt messageExt) {
+    String body = new String(messageExt.getBody(), "UTF-8");
+    String msgId = messageExt.getMsgId();
+    String tags = messageExt.getTags();
+    String keys = messageExt.getKeys();
+    log.info("CancelOrderProcessor receive message:"+messageExt);
+    CancelOrderMQ cancelOrderMQ = JSON.parseObject(body, CancelOrderMQ.class);
+    TradeOrder order = orderService.findOne(cancelOrderMQ.getOrderId());
+    order.setOrderStatus(ShopCode.SHOP_ORDER_CANCEL.getCode());
+    orderService.changeOrderStatus(order);
+    log.info("订单:["+order.getOrderId()+"]状态设置为取消");
+    return order;
+}
 ```
 
 ## 4.3 测试
@@ -1590,9 +1586,9 @@ executorService.submit(new Runnable() {
 
 支付成功后，支付服务payService发送MQ消息，订单服务、用户服务、日志服务需要订阅消息进行处理
 
-1. 订单服务修改订单状态为已支付
-2. 日志服务记录支付日志
-3. 用户服务负责给用户增加积分
+1. 订单服务，修改订单状态为已支付
+2. 日志服务，记录支付日志
+3. 用户服务，负责给用户增加积分
 
 以下用订单服务为例说明消息的处理情况
 
@@ -1808,7 +1804,6 @@ public class PayTest {
      */
     @Test
     public void createPayment(){
-
         Long orderId = 346321587315814400L;
         TradePay pay = new TradePay();
         pay.setOrderId(orderId);
@@ -1829,7 +1824,6 @@ public class PayTest {
         pay.setIsPaid(ShopCode.SHOP_ORDER_PAY_STATUS_IS_PAY.getCode());
         Result result = restTemplate.postForEntity(baseURI + callbackPaymentPath, pay, Result.class).getBody();
         System.out.println(result);
-
     }
 
 }
