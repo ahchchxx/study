@@ -172,6 +172,7 @@ def read_cell_value(cell=None, sheet_name=None, row_idx=0, col_idx=0, book=None)
                                                             "unknown error code %s" % cell.value)
             }
         )
+    # elif cell.ctype is xlrd.XL_CELL_TEXT:
     else:
         ret_val = cell.value
     return ret_val
