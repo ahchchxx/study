@@ -158,6 +158,12 @@ docker镜像存储在哪里
 	上传文件夹
 		docker cp /root/bk_test a1c75f00eff6:/etc/nginx/
 
+【网络相关】
+	查看网络
+		docker network ls
+	查看网络使用情况
+		docker network inspect bridge
+		
 
 docker容器存放的位置
 	/var/lib/docker/containers/
