@@ -192,7 +192,7 @@ public class Consumer implements RocketMQListener<String> {
 mvn install -Dmaven.skip.test=true
 ```
 
-![](./img/dubbo.png)
+<img src="./img/dubbo.png" style="zoom: 50%;" />
 
 ### 2.3.1 搭建Zookeeper集群
 
