@@ -1,4 +1,9 @@
 
+【安装】
+	apt install mysql-server
+	apt install mysql-client
+
+
 【程序管理命令】
 查看是否运行
 	ps -ef | grep mysqld
