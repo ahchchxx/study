@@ -39,6 +39,12 @@ docker镜像存储在哪里
 	关闭
 		service docker stop
 		systemctl stop docker
+	
+	查看版本
+		docker -v
+	
+	查看docker信息
+		docker info
 
 【镜像修改命令】
 	查看镜像
