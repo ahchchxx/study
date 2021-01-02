@@ -22,6 +22,8 @@ IDEA新建项目时，没有Spring Initializr这个选项。
 安装插件 JRebel，实现对修改局部代码的热更新
 	《JRebel插件使用详解》 https://blog.csdn.net/lianghecai52171314/article/details/105637251
 	Editor里，按快捷键 Ctrl + Shift + F9 快速更新。运行后会提示有变化是否重新加载，选yes，从而进行热更新。
+lombok简介及报红、报错解决办法
+	https://blog.csdn.net/daisy_zhangy/article/details/89873972
 
 可以直接拷贝、粘贴 “Idea plugins.zip” 到文件夹
 	D:\application\Idea202022\plugins
@@ -40,9 +42,6 @@ IDEA新建项目时，没有Spring Initializr这个选项。
 
 修改 idea 创建变量的快捷键为： Ctrl + alt + / 
 	Settings > keymap > Introduce Variable
-
-idea lombok简介及报红、报错解决办法
-https://blog.csdn.net/daisy_zhangy/article/details/89873972
 
 
 【破解版】
