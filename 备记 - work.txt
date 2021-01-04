@@ -44,7 +44,7 @@ Windows 7 右键的一些配置
 			maven settings.xml
 	远程连接
 		FlashFXP-ftp 破解版
-		SecureCRT6.5.0 破解版
+		SecureCRT6.5.0 破解版，可以建文件夹分类，方便管理
 		Putty(free)
 	VmWare
 		Windows和Linux共享文件、文件夹的工具：VMTools 安装使用
