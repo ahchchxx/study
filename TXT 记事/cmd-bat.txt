@@ -1,0 +1,19 @@
+windows 下 .bat 批处理文件
+	@echo off
+	
+	:: 在这个目录执行命令
+	pushd C:\Users\HROne\Documents\WeChat Files\wxid_s8f2uzzg63zq21\FileStorage\File
+
+	:: 检索所有名称中包含 peo 关键词的文件，写入到指定文件
+	dir /b /s *peo* > C:\Users\HROne\Desktop\log\a.txt
+
+	:: 一行行读取文件，并拷贝到指定目录
+	for /f "tokens=*" %%a in (C:\Users\HROne\Desktop\log\a.txt) do (
+		:: echo %%a
+		copy "%%a" C:\Users\HROne\Desktop\log\
+	)
+
+	pause
+	@echo on
+
+
