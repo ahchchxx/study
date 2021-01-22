@@ -16,18 +16,22 @@ mongodb 非关系型数据库，文档型数据库
 	并在 D:\application\mongodb\log 下面创建一个空的 mongo.log
 
 【Ubuntu下安装】
-https://www.jianshu.com/p/88304ea51da3
-setp 1. Import the public key used by the package management system.
-	sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
+快捷安装
+	apt-cache search mongodb
+	apt install mongodb
+相关安装教程
+	https://www.jianshu.com/p/88304ea51da3
+	setp 1. Import the public key used by the package management system.
+		sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
 
-step 2. Create a list file for MongoDB
-	echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
+	step 2. Create a list file for MongoDB
+		echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
 
-step 3. Reload local package database
-	sudo apt-get update
+	step 3. Reload local package database
+		sudo apt-get update
 
-step 4. Install the latest stable version of MongoDB
-	sudo apt-get install -y mongodb-org
+	step 4. Install the latest stable version of MongoDB
+		sudo apt-get install -y mongodb-org
 
 【配置】
 	vi /etc/mongod.conf
