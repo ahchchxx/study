@@ -24,8 +24,10 @@ IDEA新建项目时，没有Spring Initializr这个选项。
 	Editor里，按快捷键 Ctrl + Shift + F9 快速更新。运行后会提示有变化是否重新加载，选yes，从而进行热更新。
 lombok简介及报红、报错解决办法
 	https://blog.csdn.net/daisy_zhangy/article/details/89873972
+生成时序图，Sequence Diagram
+	在方法上单击右键，选择这个功能即可
 
-可以直接拷贝、粘贴 “Idea plugins.zip” 到文件夹
+插件管理技巧：可以直接拷贝、粘贴 “Idea plugins.zip” 到文件夹
 	D:\application\Idea202022\plugins
 
 
