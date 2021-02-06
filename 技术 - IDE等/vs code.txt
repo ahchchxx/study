@@ -1,5 +1,6 @@
 
-主题
+主题修改
+Settings > 右上角按钮“切换 json”
 {
     "workbench.colorTheme": "Visual Studio Light",
     "workbench.colorCustomizations": {
