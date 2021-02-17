@@ -671,11 +671,11 @@ NameServer的主要作用是为消息的生产者和消息消费者提供关于�
 ***代码：RouteInfoManager***
 
 ```java
-private final HashMap<String/* topic */, List<QueueData>> topicQueueTable;
-private final HashMap<String/* brokerName */, BrokerData> brokerAddrTable;
-private final HashMap<String/* clusterName */, Set<String/* brokerName */>> clusterAddrTable;
-private final HashMap<String/* brokerAddr */, BrokerLiveInfo> brokerLiveTable;
-private final HashMap<String/* brokerAddr */, List<String>/* Filter Server */> filterServerTable;
+private final HashMap<String, List<QueueData>> topicQueueTable; // topic,
+private final HashMap<String, BrokerData> brokerAddrTable; // brokerName,
+private final HashMap<String, Set<String>> clusterAddrTable; // clusterName, [brokerName]
+private final HashMap<String, BrokerLiveInfo> brokerLiveTable; // brokerAddr,
+private final HashMap<String, List<String>> filterServerTable; // brokerAddr, [Filter Server]
 ```
 
 ![](img/路由实体图.png)
@@ -731,7 +731,6 @@ this.scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
 List<String> nameServerAddressList = this.remotingClient.getNameServerAddressList();
 //遍历所有nameserver列表
 if (nameServerAddressList != null && nameServerAddressList.size() > 0) {
-
     //封装请求头
     final RegisterBrokerRequestHeader requestHeader = new RegisterBrokerRequestHeader();
     requestHeader.setBrokerAddr(brokerAddr);
