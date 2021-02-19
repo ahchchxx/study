@@ -75,6 +75,12 @@ server 节点里：（测试时，不要加 buffer，error不要加格式化）
 	error_log /var/log/nginx/error-local.log;
 
 
+【nginx会返回403的原因】
+	● nginx配置了白名单，client端访问的IP不在白名单内
+	● 访问的路径是个目录，而nginx配置了禁止列目录
+	● 访问的路径是个文件，但nginx服务配置的用户和用户组对文件没有读取权限
+	● 目录索引index 配置错误，例如你的目录下只有index.html，你却配置了index.shmtl或index.php等
+	● Linux 服务器里，运行nginx软件的用户，没有对目标文件（夹）的操作权限
 
 
 ===========  如下 2 个完整的配置案例 ------------
