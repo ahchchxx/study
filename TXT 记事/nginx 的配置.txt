@@ -1,20 +1,25 @@
-【反向代理】
+【反向代理-典型案例】
 	server {
 		listen 80;
 		location / {
 			proxy_pass http://10.10.10.10:20186;
 		}
+		
+		# 特定的路径，引到另外一个服务
+        location /etsoft/ {
+            proxy_pass http://127.0.0.1:8888;
+        }
 	}
 
 【端口路由】？
-相同端口，不同 server_name，“端口路由”，暴露相同端口，通过URL地址跳转到不同的服务
+	相同端口，不同 server_name，“端口路由”，暴露相同端口，通过URL地址跳转到不同的服务
 
 【负载均衡】
-Upstream 模块实现负载均衡
-    ip_hash 指令
-    server 指令
-    upstream 指令及相关变量
-	weight 不同节点的权重
+	Upstream 模块实现负载均衡
+		ip_hash 指令
+		server 指令
+		upstream 指令及相关变量
+		weight 不同节点的权重
 【限流相关】
 	limit_req zone 等相关命令，可以设置请求限流
 
