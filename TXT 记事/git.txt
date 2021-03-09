@@ -3,8 +3,10 @@
 
 git init 		新建一个空的仓库
 
-【提交文件】
+【查看变动】
 git status 		查看状态
+
+【提交文件】
 git add . 		添加文件
 git commit -m '注释' 提交添加的文件并备注说明
 
@@ -21,9 +23,19 @@ git reset --hard 版本号前六位 回归到指定版本
 【分支操作】
 git branch 			查看分支
 git branch newname 	创建一个叫newname的分支
+
+git checkout		查看本地当前分支的代码变化
 git checkout newname 切换到叫newname的分支上
+
 git merge newname 	把newname分支合并到当前分支上
 
 
 【拉取文件】
 git pull origin master 将master分支上的内容拉到本地上
+git pull –rebase 处理开发版本下，有多个commit的情况下，略过无效的commit记录，自动更新本地代码
+
+
+【暂存当前修改】
+git stash #可用来暂存当前正在进行的工作
+git stash pop #从Git栈中读取最近一次保存的内容
+
